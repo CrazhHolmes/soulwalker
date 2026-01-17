@@ -23,8 +23,6 @@ SceneTransition="*res://autoload/SceneTransition.tscn"
 MemoryReflection="*res://autoload/MemoryReflection.tscn"
 DocumentSearch="*res://systems/interact/DocumentSearch.gd"
 
-
-
 [input]
 
 move_left={

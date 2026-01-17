@@ -71,11 +71,25 @@ offset_right = 800.0
 offset_bottom = 600.0
 color = Color(0.04, 0.02, 0.06, 1)
 
+[node name="AstralParticles" type="CPUParticles2D" parent="AstralBg"]
+position = Vector2(400, 300)
+amount = 100
+lifetime = 5.0
+preprocess = 5.0
+speed_scale = 0.5
+emission_shape = 3
+emission_rect_extents = Vector2(400, 300)
+gravity = Vector2(0, -5)
+scale_amount_min = 1.0
+scale_amount_max = 3.0
+color = Color(0.5, 0.7, 1, 0.3)
+
 [node name="Stars" type="ColorRect" parent="AstralBg"]
 layout_mode = 0
 offset_right = 800.0
 offset_bottom = 600.0
 color = Color(0.1, 0.1, 0.2, 0.2)
+
 
 [node name="Mirror_Origin" type="Area2D" parent="."]
 position = Vector2(400, 150)

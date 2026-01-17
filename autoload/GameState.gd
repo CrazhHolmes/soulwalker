@@ -90,6 +90,16 @@ func new_game() -> void:
 	last_theme = ""
 	current_scene_type = SceneType.MENU
 
+func set_player(player_name: String, archetype: String) -> void:
+	current_player_data["name"] = player_name
+	current_player_data["archetype"] = archetype
+	print("GameState: Player set to ", player_name, " (", archetype, ")")
+
+func set_vow(vow: String) -> void:
+	current_player_data["vow"] = vow
+	print("GameState: Vow set to ", vow)
+
+
 # Stores pending dialogue text without logging immediately
 func store_dialogue_pending(station_key: String, theme: String, text: String) -> void:
 	if dialogue_progress.has(station_key):

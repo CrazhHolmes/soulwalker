@@ -52,19 +52,38 @@ func _on_mirror_viewed(_type):
 	# Could add atmospheric sounds here
 	pass
 
+func _on_mirror_entered(_id):
+	# Handle atmospheric transition effects when entering a mirror
+	apply_camera_shake(0.3, 10.0)
+
 func _on_mirror_traversed(id: String, is_correct: bool):
 	if puzzle_solved: return
 	
 	if is_correct:
 		if not id in puzzle_sequence:
 			puzzle_sequence.append(id)
+			apply_camera_shake(0.2, 5.0)
 			check_puzzle_completion()
 	else:
-		# Reset on wrong path? Or just don't progress
+		# Reset on wrong path
 		puzzle_sequence.clear()
+		apply_camera_shake(0.5, 15.0)
 		show_dialogue("The reflection rejects your path. The sequence shatters.")
 
+func apply_camera_shake(duration: float, intensity: float):
+	var player = get_tree().get_first_node_in_group("player")
+	if player:
+		var camera = player.get_node_or_null("Camera2D")
+		if camera:
+			var original_offset = camera.offset
+			var tween = create_tween()
+			for i in range(5):
+				var shake_offset = Vector2(randf_range(-intensity, intensity), randf_range(-intensity, intensity))
+				tween.tween_property(camera, "offset", shake_offset, duration / 5.0)
+			tween.tween_property(camera, "offset", original_offset, 0.1)
+
 func check_puzzle_completion():
+
 	var all_correct = true
 	for id in required_sequence:
 		if id not in puzzle_sequence:
