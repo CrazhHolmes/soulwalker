@@ -16,10 +16,10 @@ extends Node2D
 var current_room: String = "Main Hall"
 
 # UI references
-@onready var merchant_name_label: Label = $UI/MerchantPanel/VBox/MerchantNameLabel
-@onready var theme_label: Label = $UI/MerchantPanel/VBox/ThemeLabel
-@onready var dialogue_label: Label = $UI/DialoguePanel/VBox/DialogueLabel
-@onready var dialogue_panel: PanelContainer = $UI/DialoguePanel
+@onready var merchant_name_label: Label = get_node_or_null("UI/MerchantPanel/VBox/MerchantNameLabel")
+@onready var theme_label: Label = get_node_or_null("UI/MerchantPanel/VBox/ThemeLabel")
+@onready var dialogue_label: Label = get_node_or_null("UI/DialoguePanel/VBox/DialogueLabel")
+@onready var dialogue_panel: PanelContainer = get_node_or_null("UI/DialoguePanel")
 
 func _ready() -> void:
 	# Set scene type

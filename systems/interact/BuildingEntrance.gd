@@ -50,6 +50,9 @@ func enter_building() -> void:
 		push_warning("BuildingEntrance: No interior scene set!")
 		return
 	
+	if SceneTransition.is_transitioning:
+		return
+		
 	# Find the player to save their position
 	var player = get_tree().get_first_node_in_group("player")
 	var player_pos = Vector2.ZERO
@@ -64,4 +67,5 @@ func enter_building() -> void:
 		"building_position": global_position
 	}
 	
+	print("BuildingEntrance: Entering ", interior_scene, " from ", entrance_id)
 	SceneTransition.transition_to_with_data(interior_scene, data)

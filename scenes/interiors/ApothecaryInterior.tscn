@@ -1,9 +1,10 @@
-[gd_scene load_steps=7 format=3]
+[gd_scene load_steps=8 format=3]
 
 [ext_resource type="Script" path="res://scenes/interiors/InteriorBase.gd" id="1_interior"]
 [ext_resource type="PackedScene" path="res://actors/player/Player.tscn" id="2_player"]
 [ext_resource type="Script" path="res://scenes/interiors/InteriorMerchant.gd" id="3_merchant"]
 [ext_resource type="Script" path="res://systems/interact/ExitDoor.gd" id="4_exit"]
+[ext_resource type="Script" path="res://systems/interact/RoomTransition.gd" id="5_transition"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_merchant"]
 size = Vector2(40, 20)
@@ -249,7 +250,7 @@ prompt_text = "[E] Exit"
 position = Vector2(40, 220)
 collision_layer = 2
 collision_mask = 1
-script = ExtResource("4_transition")
+script = ExtResource("5_transition")
 target_scene = "res://scenes/interiors/ApothecaryBasement.tscn"
 target_room = "Basement Lab"
 spawn_position = Vector2(240, 180)

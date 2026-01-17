@@ -37,7 +37,14 @@ func transition_to_with_data(scene_path: String, data: Dictionary) -> void:
 	await tween.finished
 	
 	# Change scene
-	get_tree().change_scene_to_file(scene_path)
+	var err = get_tree().change_scene_to_file(scene_path)
+	if err != OK:
+		push_error("SceneTransition: Failed to load scene: " + scene_path + " (Error: " + str(err) + ")")
+		# Fade back in immediately on failure so player isn't stuck in blackness
+		var tween_fail = create_tween()
+		tween_fail.tween_property(fade_rect, "color:a", 0.0, 0.3)
+		is_transitioning = false
+		return
 	
 	# Wait a frame for scene to load
 	await get_tree().process_frame

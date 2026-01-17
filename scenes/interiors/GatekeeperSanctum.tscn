@@ -283,11 +283,11 @@ offset_bottom = 70.0
 [node name="VBox" type="VBoxContainer" parent="UI/MerchantPanel"]
 layout_mode = 2
 
-[node name="Name" type="Label" parent="UI/MerchantPanel/VBox"]
+[node name="MerchantNameLabel" type="Label" parent="UI/MerchantPanel/VBox"]
 layout_mode = 2
 text = "The Astral Sanctum"
 
-[node name="Theme" type="Label" parent="UI/MerchantPanel/VBox"]
+[node name="ThemeLabel" type="Label" parent="UI/MerchantPanel/VBox"]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.6, 0.5, 1, 1)
 theme_override_font_sizes/font_size = 12

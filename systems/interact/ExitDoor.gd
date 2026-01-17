@@ -22,7 +22,7 @@ func _ready() -> void:
 		prompt_label.text = prompt_text
 
 func _process(_delta: float) -> void:
-	if player_in_range and Input.is_action_just_pressed("interact"):
+	if player_in_range and Input.is_action_just_pressed("interact") and not SceneTransition.is_transitioning:
 		exit_building()
 
 func _on_body_entered(body: Node2D) -> void:
@@ -40,7 +40,7 @@ func _on_body_exited(body: Node2D) -> void:
 func exit_building() -> void:
 	# Get return data from transition
 	var data = SceneTransition.get_transition_data()
-	var return_scene = data.get("return_scene", "res://scenes/world/WorldMap.tscn")
+	var return_scene = data.get("return_scene", "res://scenes/world/WorldScene2D.tscn")
 	var return_pos = data.get("return_position", Vector2.ZERO)
 	var building_pos = data.get("building_position", Vector2.ZERO)
 	
