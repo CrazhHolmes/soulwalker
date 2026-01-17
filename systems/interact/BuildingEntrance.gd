@@ -2,6 +2,7 @@
 # Attach to Area2D nodes at building doors
 #
 # Shows prompt when player is nearby, transitions to interior on E press
+# Saves player position so they return to the same spot when exiting
 
 extends Area2D
 
@@ -49,10 +50,18 @@ func enter_building() -> void:
 		push_warning("BuildingEntrance: No interior scene set!")
 		return
 	
-	# Pass data about which entrance was used
+	# Find the player to save their position
+	var player = get_tree().get_first_node_in_group("player")
+	var player_pos = Vector2.ZERO
+	if player:
+		player_pos = player.global_position
+	
+	# Pass data about which entrance was used and where to return
 	var data = {
 		"from_entrance": entrance_id,
-		"return_scene": get_tree().current_scene.scene_file_path
+		"return_scene": get_tree().current_scene.scene_file_path,
+		"return_position": player_pos,
+		"building_position": global_position
 	}
 	
 	SceneTransition.transition_to_with_data(interior_scene, data)

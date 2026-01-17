@@ -1,5 +1,6 @@
 # ExitDoor.gd - Handles exiting from interior scenes back to the world
 # Attach to Area2D nodes at interior doors
+# Returns player to their saved position in the world
 
 extends Area2D
 
@@ -37,9 +38,21 @@ func _on_body_exited(body: Node2D) -> void:
 			prompt_label.visible = false
 
 func exit_building() -> void:
-	# Get return scene from transition data
+	# Get return data from transition
 	var data = SceneTransition.get_transition_data()
-	var return_scene = data.get("return_scene", "res://scenes/world/WorldScene2D.tscn")
+	var return_scene = data.get("return_scene", "res://scenes/world/WorldMap.tscn")
+	var return_pos = data.get("return_position", Vector2.ZERO)
+	var building_pos = data.get("building_position", Vector2.ZERO)
 	
-	# Return to world
-	SceneTransition.transition_to(return_scene)
+	# Calculate exit position (slightly south of building door)
+	var exit_pos = building_pos + Vector2(0, 30)
+	if return_pos != Vector2.ZERO:
+		exit_pos = return_pos
+	
+	# Pass the exit position back so the world can position the player
+	var exit_data = {
+		"spawn_position": exit_pos,
+		"from_interior": true
+	}
+	
+	SceneTransition.transition_to_with_data(return_scene, exit_data)
