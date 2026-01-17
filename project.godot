@@ -21,6 +21,8 @@ SceneLoader="*res://autoload/SceneLoader.gd"
 GameState="*res://autoload/GameState.gd"
 SceneTransition="*res://autoload/SceneTransition.tscn"
 MemoryReflection="*res://autoload/MemoryReflection.tscn"
+DocumentSearch="*res://systems/interact/DocumentSearch.gd"
+
 
 
 [input]

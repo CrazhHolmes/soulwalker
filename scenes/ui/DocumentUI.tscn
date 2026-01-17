@@ -1,0 +1,141 @@
+[gd_scene load_steps=10 format=3]
+
+[ext_resource type="Script" path="res://scenes/ui/DocumentUI.gd" id="1_logic"]
+[ext_resource type="Shader" path="res://systems/shaders/Redaction.gdshader" id="2_shader"]
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_noise"]
+noise_type = 3
+frequency = 0.05
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_redaction"]
+width = 256
+height = 256
+noise = SubResource("FastNoiseLite_noise")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_redaction"]
+shader = ExtResource("2_shader")
+shader_parameter/redaction_level = 0.8
+shader_parameter/reveal_pos = Vector2(0.5, 0.5)
+shader_parameter/reveal_radius = 0.1
+shader_parameter/use_magnifier = false
+shader_parameter/noise_tex = SubResource("NoiseTexture2D_redaction")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_paper"]
+bg_color = Color(0.85, 0.83, 0.78, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.4, 0.38, 0.35, 1)
+corner_radius_top_left = 2
+corner_radius_top_right = 2
+corner_radius_bottom_right = 2
+corner_radius_bottom_left = 2
+shadow_size = 5
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_header"]
+bg_color = Color(0.1, 0.1, 0.15, 1)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+
+[node name="DocumentUI" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_logic")
+
+[node name="Dim" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.4)
+
+[node name="MainPanel" type="PanelContainer" parent="."]
+custom_minimum_size = Vector2(400, 500)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -200.0
+offset_top = -250.0
+offset_right = 200.0
+offset_bottom = 250.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_paper")
+
+[node name="MarginContainer" type="MarginContainer" parent="MainPanel"]
+layout_mode = 2
+theme_override_constants/margin_left = 30
+theme_override_constants/margin_top = 30
+theme_override_constants/margin_right = 30
+theme_override_constants/margin_bottom = 30
+
+[node name="VBox" type="VBoxContainer" parent="MainPanel/MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 20
+
+[node name="Header" type="PanelContainer" parent="MainPanel/MarginContainer/VBox"]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_header")
+
+[node name="CategoryLabel" type="Label" parent="MainPanel/MarginContainer/VBox/Header"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.8, 0.8, 1, 1)
+theme_override_font_sizes/font_size = 12
+text = "OFFICIAL RECORD"
+horizontal_alignment = 1
+
+[node name="TitleLabel" type="Label" parent="MainPanel/MarginContainer/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.1, 0.1, 0.1, 1)
+theme_override_font_sizes/font_size = 18
+text = "PERSONNEL FILE: SUBJECT 0"
+horizontal_alignment = 1
+
+[node name="HSeparator" type="HSeparator" parent="MainPanel/MarginContainer/VBox"]
+layout_mode = 2
+
+[node name="ContentLabel" type="Label" parent="MainPanel/MarginContainer/VBox"]
+material = SubResource("ShaderMaterial_redaction")
+custom_minimum_size = Vector2(0, 200)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.1, 0.1, 0.1, 1)
+theme_override_font_sizes/font_size = 14
+text = "This is a highly classified document. Reveal the redactions to understand your past."
+autowrap_mode = 3
+
+[node name="Spacer" type="Control" parent="MainPanel/MarginContainer/VBox"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Controls" type="HBoxContainer" parent="MainPanel/MarginContainer/VBox"]
+layout_mode = 2
+alignment = 1
+
+[node name="ScanButton" type="Button" parent="MainPanel/MarginContainer/VBox/Controls"]
+custom_minimum_size = Vector2(120, 40)
+layout_mode = 2
+text = "SCAN RECORDS"
+
+[node name="CloseButton" type="Button" parent="MainPanel/MarginContainer/VBox/Controls"]
+custom_minimum_size = Vector2(120, 40)
+layout_mode = 2
+text = "CLOSE"
+
+[node name="TypeTimer" type="Timer" parent="."]
+wait_time = 0.05
+
+[node name="ScanTimer" type="Timer" parent="."]
+wait_time = 0.1
+
+[connection signal="pressed" from="MainPanel/MarginContainer/VBox/Controls/ScanButton" to="." method="_on_scan_button_pressed"]
+[connection signal="pressed" from="MainPanel/MarginContainer/VBox/Controls/CloseButton" to="." method="_on_close_button_pressed"]
