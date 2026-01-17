@@ -1,5 +1,6 @@
 # InteriorMerchant.gd - Merchant NPC inside interior scenes
 # Handles dialogue and interactions inside buildings
+# Uses dialogue-driven logging - only logs after meaningful dialogue completion
 
 extends Area2D
 
@@ -8,6 +9,12 @@ extends Area2D
 
 # Theme name
 @export var theme: String = "FOLK MAGIC"
+
+# NPC role within the building
+@export var npc_role: String = "merchant"  # merchant, assistant, guardian, etc.
+
+# Room location in multi-level buildings
+@export var room_name: String = "Main Hall"
 
 # Greeting lines - shown first time or randomly
 @export var greeting_lines: Array[String] = []
@@ -21,12 +28,26 @@ extends Area2D
 # Service lines - what they offer
 @export var service_lines: Array[String] = []
 
+# Revelation lines - triggered at trust thresholds
+@export var revelation_lines: Array[String] = []
+
 # Reference to the prompt label child node
 @onready var prompt_label: Label = $PromptLabel
 
 # Track interaction state
 var player_nearby: bool = false
-var interaction_count: int = 0
+var current_dialogue_stage: int = 0
+var dialogue_in_progress: bool = false
+
+# Dialogue stages
+enum DialogueStage {
+	GREETING,
+	SENSORY,
+	AFFIRMATION,
+	SERVICE,
+	REVELATION,
+	COMPLETE
+}
 
 func _ready() -> void:
 	body_entered.connect(_on_body_entered)
@@ -51,34 +72,109 @@ func _on_body_exited(body: Node2D) -> void:
 		if prompt_label:
 			prompt_label.visible = false
 		# Hide dialogue when player walks away
-		var parent = get_parent().get_parent()
+		var parent = get_parent()
 		if parent.has_method("hide_dialogue"):
 			parent.hide_dialogue()
+		# Don't reset dialogue - player can continue where they left off
 
 func interact() -> void:
-	interaction_count += 1
+	dialogue_in_progress = true
+	var trust_level = GameState.get_trust_level(station_key)
 	
-	# Build dialogue based on interaction count
+	# Build dialogue based on stage and trust
 	var text: String = ""
+	var dialogue_node: String = ""
 	
-	# First interaction: greeting
-	if interaction_count == 1 and greeting_lines.size() > 0:
-		text = greeting_lines[randi() % greeting_lines.size()]
-	# Second: sensory
-	elif interaction_count == 2 and sensory_lines.size() > 0:
-		text = sensory_lines[randi() % sensory_lines.size()]
-	# Third+: mix of affirmations and services
-	else:
-		var all_lines: Array[String] = []
-		all_lines.append_array(affirmation_lines)
-		all_lines.append_array(service_lines)
-		if all_lines.size() > 0:
-			text = all_lines[randi() % all_lines.size()]
+	match current_dialogue_stage:
+		DialogueStage.GREETING:
+			if greeting_lines.size() > 0:
+				text = greeting_lines[randi() % greeting_lines.size()]
+			dialogue_node = "greeting"
+			current_dialogue_stage = DialogueStage.SENSORY
+			
+		DialogueStage.SENSORY:
+			if sensory_lines.size() > 0:
+				text = sensory_lines[randi() % sensory_lines.size()]
+			dialogue_node = "sensory"
+			current_dialogue_stage = DialogueStage.AFFIRMATION
+			
+		DialogueStage.AFFIRMATION:
+			if affirmation_lines.size() > 0:
+				text = affirmation_lines[randi() % affirmation_lines.size()]
+			dialogue_node = "memory_revealed"  # This is a meaningful endpoint
+			current_dialogue_stage = DialogueStage.SERVICE
+			# Trigger world log update after affirmation
+			GameState.store_dialogue_pending(station_key, theme, text)
+			GameState.log_visit_only_after_dialogue_complete(station_key, dialogue_node)
+			show_dialogue_text(text)
+			return
+			
+		DialogueStage.SERVICE:
+			if service_lines.size() > 0:
+				text = service_lines[randi() % service_lines.size()]
+			dialogue_node = "service_provided"  # Meaningful endpoint
+			current_dialogue_stage = DialogueStage.REVELATION
+			# Trigger world log update after service
+			GameState.store_dialogue_pending(station_key, theme, text)
+			GameState.log_visit_only_after_dialogue_complete(station_key, dialogue_node)
+			show_dialogue_text(text)
+			return
+			
+		DialogueStage.REVELATION:
+			# Only show revelations at higher trust levels
+			if trust_level >= 3 and revelation_lines.size() > 0:
+				text = revelation_lines[randi() % revelation_lines.size()]
+				dialogue_node = "trust_earned"  # Meaningful endpoint
+				GameState.store_dialogue_pending(station_key, theme, text)
+				GameState.log_visit_only_after_dialogue_complete(station_key, dialogue_node)
+			else:
+				# Cycle back to affirmations if trust not high enough
+				var all_lines: Array[String] = []
+				all_lines.append_array(affirmation_lines)
+				all_lines.append_array(service_lines)
+				if all_lines.size() > 0:
+					text = all_lines[randi() % all_lines.size()]
+				dialogue_node = "reflection"
+			current_dialogue_stage = DialogueStage.COMPLETE
+			show_dialogue_text(text)
+			return
+			
+		DialogueStage.COMPLETE:
+			# Cycle through random deeper content
+			var all_deep_lines: Array[String] = []
+			all_deep_lines.append_array(affirmation_lines)
+			all_deep_lines.append_array(service_lines)
+			if trust_level >= 3:
+				all_deep_lines.append_array(revelation_lines)
+			if all_deep_lines.size() > 0:
+				text = all_deep_lines[randi() % all_deep_lines.size()]
+			dialogue_node = "continued"
 	
-	# Log to GameState
-	GameState.log_station(station_key, theme, text)
+	# Store dialogue text (but don't log yet for early stages)
+	GameState.store_dialogue_pending(station_key, theme, text)
 	
 	# Display dialogue in the interior scene
-	var parent = get_parent().get_parent()
+	show_dialogue_text(text)
+
+
+func show_dialogue_text(text: String) -> void:
+	var parent = get_parent()
 	if parent.has_method("show_dialogue"):
 		parent.show_dialogue(text)
+
+# Reset dialogue for a fresh conversation (called when re-entering building)
+func reset_dialogue() -> void:
+	current_dialogue_stage = DialogueStage.GREETING
+	dialogue_in_progress = false
+
+# Get the current stage name for UI display
+func get_dialogue_stage_name() -> String:
+	match current_dialogue_stage:
+		DialogueStage.GREETING: return "Greeting"
+		DialogueStage.SENSORY: return "Observation"
+		DialogueStage.AFFIRMATION: return "Reflection"
+		DialogueStage.SERVICE: return "Offering"
+		DialogueStage.REVELATION: return "Revelation"
+		DialogueStage.COMPLETE: return "Communion"
+	return "Unknown"
+

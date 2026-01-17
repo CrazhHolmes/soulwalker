@@ -1,0 +1,202 @@
+[gd_scene load_steps=8 format=3]
+
+[ext_resource type="Script" path="res://scenes/interiors/InteriorBase.gd" id="1_interior"]
+[ext_resource type="PackedScene" path="res://actors/player/Player.tscn" id="2_player"]
+[ext_resource type="Script" path="res://scenes/interiors/InteriorMerchant.gd" id="3_merchant"]
+[ext_resource type="Script" path="res://systems/interact/RoomTransition.gd" id="4_transition"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_guardian"]
+size = Vector2(40, 20)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_door"]
+size = Vector2(50, 20)
+
+[node name="ArchivistVault" type="Node2D"]
+script = ExtResource("1_interior")
+merchant_name = "The Archivist - Vault"
+merchant_theme = "CLASSIFIED"
+interior_width = 400.0
+interior_height = 400.0
+
+[node name="Background" type="ColorRect" parent="."]
+offset_right = 400.0
+offset_bottom = 400.0
+color = Color(0.02, 0.02, 0.04, 1)
+
+[node name="Floor" type="ColorRect" parent="."]
+offset_left = 20.0
+offset_top = 20.0
+offset_right = 380.0
+offset_bottom = 380.0
+color = Color(0.08, 0.08, 0.12, 1)
+
+[node name="Walls" type="StaticBody2D" parent="."]
+collision_layer = 1
+collision_mask = 0
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Walls"]
+polygon = PackedVector2Array(0, 0, 400, 0, 400, 400, 0, 400, 0, 0, 20, 20, 20, 380, 380, 380, 380, 20, 20, 20)
+
+[node name="SecurityCabinet" type="ColorRect" parent="."]
+offset_left = 150.0
+offset_top = 50.0
+offset_right = 250.0
+offset_bottom = 100.0
+color = Color(0.1, 0.1, 0.15, 1)
+
+[node name="Glow" type="ColorRect" parent="SecurityCabinet"]
+offset_left = 40.0
+offset_top = 10.0
+offset_right = 60.0
+offset_bottom = 15.0
+color = Color(0.2, 0.8, 1, 0.4)
+
+[node name="CabinetCollision" type="StaticBody2D" parent="SecurityCabinet"]
+collision_layer = 1
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="SecurityCabinet/CabinetCollision"]
+position = Vector2(50, 25)
+shape = SubResource("RectangleShape2D_guardian")
+
+[node name="VaultGuardian" type="Area2D" parent="."]
+position = Vector2(200, 110)
+collision_layer = 2
+collision_mask = 1
+script = ExtResource("3_merchant")
+station_key = "archivist"
+theme = "CLASSIFIED"
+npc_role = "guardian"
+room_name = "The Vault"
+greeting_lines = Array[String](["State your clearance level. Records indicate you should not be here.", "The deep files are for the Archivist's eyes only.", "Identification accepted. Barely."])
+sensory_lines = Array[String](["The hum of cooling fans is the only sound here.", "Rows of titanium cabinets stretch into the dark.", "The smell of cold metal and ozone."])
+affirmation_lines = Array[String](["Most people prefer the redacted versions. The truth is... heavy.", "We keep your file in the Lead Chamber. For safety.", "Every memory is a liability if not properly filed."])
+service_lines = Array[String](["I can let you see one document. Choose wisely.", "Redaction is for your own protection.", "The system never forgets. Even when you do."])
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="VaultGuardian"]
+shape = SubResource("RectangleShape2D_guardian")
+
+[node name="Sprite" type="ColorRect" parent="VaultGuardian"]
+offset_left = -16.0
+offset_top = -24.0
+offset_right = 16.0
+offset_bottom = 24.0
+color = Color(0.2, 0.2, 0.3, 1)
+
+[node name="Visor" type="ColorRect" parent="VaultGuardian"]
+offset_left = -10.0
+offset_top = -20.0
+offset_right = 10.0
+offset_bottom = -16.0
+color = Color(0.4, 0.9, 1, 1)
+
+[node name="PromptLabel" type="Label" parent="VaultGuardian"]
+offset_left = -40.0
+offset_top = 35.0
+offset_right = 40.0
+offset_bottom = 55.0
+theme_override_font_sizes/font_size = 10
+text = "[E] Interact"
+horizontal_alignment = 1
+
+[node name="StairsUp" type="Area2D" parent="."]
+position = Vector2(200, 360)
+collision_layer = 2
+collision_mask = 1
+script = ExtResource("4_transition")
+target_scene = "res://scenes/interiors/ArchivistInterior.tscn"
+target_room = "Main Hall"
+spawn_position = Vector2(200, 240)
+floor_num = 1
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StairsUp"]
+shape = SubResource("RectangleShape2D_door")
+
+[node name="Visual" type="ColorRect" parent="StairsUp"]
+offset_left = -25.0
+offset_top = -10.0
+offset_right = 25.0
+offset_bottom = 10.0
+color = Color(0.1, 0.1, 0.15, 1)
+
+[node name="Label" type="Label" parent="StairsUp/Visual"]
+layout_mode = 0
+offset_top = -20.0
+offset_right = 50.0
+theme_override_font_sizes/font_size = 10
+text = "EXIT VAULT"
+horizontal_alignment = 1
+
+[node name="PromptLabel" type="Label" parent="StairsUp"]
+offset_left = -40.0
+offset_top = 15.0
+offset_right = 40.0
+offset_bottom = 35.0
+theme_override_font_sizes/font_size = 10
+text = "[E] Return"
+horizontal_alignment = 1
+
+[node name="SpawnPoint" type="Marker2D" parent="."]
+position = Vector2(200, 320)
+
+[node name="Player" parent="." instance=ExtResource("2_player")]
+position = Vector2(200, 320)
+
+[node name="UI" type="CanvasLayer" parent="."]
+
+[node name="MerchantPanel" type="PanelContainer" parent="UI"]
+offset_left = 10.0
+offset_top = 10.0
+offset_right = 180.0
+offset_bottom = 70.0
+
+[node name="VBox" type="VBoxContainer" parent="UI/MerchantPanel"]
+layout_mode = 2
+
+[node name="MerchantNameLabel" type="Label" parent="UI/MerchantPanel/VBox"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 16
+text = "The Archivist - Vault"
+
+[node name="ThemeLabel" type="Label" parent="UI/MerchantPanel/VBox"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 12
+theme_override_colors/font_color = Color(0.5, 0.5, 0.7, 1)
+text = "CLASSIFIED"
+
+[node name="DialoguePanel" type="PanelContainer" parent="UI"]
+visible = false
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -180.0
+offset_top = -100.0
+offset_right = 180.0
+offset_bottom = -20.0
+grow_horizontal = 2
+grow_vertical = 0
+
+[node name="VBox" type="VBoxContainer" parent="UI/DialoguePanel"]
+layout_mode = 2
+
+[node name="DialogueLabel" type="Label" parent="UI/DialoguePanel/VBox"]
+layout_mode = 2
+text = "..."
+autowrap_mode = 2
+
+[node name="ControlsHint" type="Label" parent="UI"]
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -150.0
+offset_top = -30.0
+offset_right = -10.0
+grow_horizontal = 0
+grow_vertical = 0
+theme_override_font_sizes/font_size = 12
+text = "WASD: Move | E: Interact"
+horizontal_alignment = 2

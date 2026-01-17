@@ -1,0 +1,259 @@
+[gd_scene load_steps=8 format=3]
+
+[ext_resource type="Script" path="res://scenes/interiors/InteriorBase.gd" id="1_interior"]
+[ext_resource type="PackedScene" path="res://actors/player/Player.tscn" id="2_player"]
+[ext_resource type="Script" path="res://scenes/interiors/InteriorMerchant.gd" id="3_merchant"]
+[ext_resource type="Script" path="res://systems/interact/RoomTransition.gd" id="4_transition"]
+[ext_resource type="PackedScene" path="res://scenes/ui/HerbMixingUI.tscn" id="5_minigame"]
+
+[sub_resource type="GDScript" id="GDScript_table"]
+script/source = "extends Area2D
+
+@onready var prompt_label = $PromptLabel
+var player_nearby = false
+
+func _ready():
+	body_entered.connect(_on_body_entered)
+	body_exited.connect(_on_body_exited)
+	prompt_label.visible = false
+
+func _process(_delta):
+	if player_nearby and Input.is_action_just_pressed(\"interact\"):
+		open_game()
+
+func _on_body_entered(body):
+	if body.is_in_group(\"player\"):
+		player_nearby = true
+		prompt_label.visible = true
+
+func _on_body_exited(body):
+	if body.is_in_group(\"player\"):
+		player_nearby = false
+		prompt_label.visible = false
+
+func open_game():
+	var ui = get_tree().current_scene.get_node(\"UI/HerbMixingUI\")
+	if ui:
+		ui.open_minigame()
+"
+]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_apprentice"]
+size = Vector2(40, 20)
+
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_walls"]
+size = Vector2(300, 250)
+
+[node name="ApothecaryBasement" type="Node2D"]
+script = ExtResource("1_interior")
+merchant_name = "The Apothecary - Lab"
+merchant_theme = "ALCHEMY"
+interior_width = 300.0
+interior_height = 250.0
+
+[node name="Background" type="ColorRect" parent="."]
+offset_right = 300.0
+offset_bottom = 250.0
+color = Color(0.05, 0.05, 0.05, 1)
+
+[node name="Floor" type="ColorRect" parent="."]
+offset_left = 15.0
+offset_top = 15.0
+offset_right = 285.0
+offset_bottom = 235.0
+color = Color(0.12, 0.08, 0.08, 1)
+
+[node name="Walls" type="StaticBody2D" parent="."]
+collision_layer = 1
+collision_mask = 0
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Walls"]
+polygon = PackedVector2Array(0, 0, 300, 0, 300, 250, 0, 250, 0, 0, 15, 15, 15, 235, 285, 235, 285, 15, 15, 15)
+
+[node name="LabTable" type="ColorRect" parent="."]
+offset_left = 50.0
+offset_top = 50.0
+offset_right = 150.0
+offset_bottom = 80.0
+color = Color(0.2, 0.15, 0.1, 1)
+
+[node name="TableInteract" type="Area2D" parent="LabTable"]
+position = Vector2(50, 40)
+collision_layer = 2
+collision_mask = 1
+script = SubResource("GDScript_table")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="LabTable/TableInteract"]
+shape = SubResource("RectangleShape2D_apprentice")
+
+[node name="PromptLabel" type="Label" parent="LabTable/TableInteract"]
+offset_left = -40.0
+offset_top = 15.0
+offset_right = 40.0
+offset_bottom = 35.0
+theme_override_font_sizes/font_size = 10
+text = "[E] Mix Herbs"
+horizontal_alignment = 1
+
+[node name="TableCollision" type="StaticBody2D" parent="LabTable"]
+collision_layer = 1
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="LabTable/TableCollision"]
+position = Vector2(50, 15)
+shape = SubResource("RectangleShape2D_apprentice")
+
+
+[node name="BoyleApparatus" type="ColorRect" parent="LabTable"]
+offset_left = 10.0
+offset_top = -15.0
+offset_right = 25.0
+offset_bottom = 0.0
+color = Color(0.4, 0.6, 0.8, 0.6)
+
+[node name="Apprentice" type="Area2D" parent="."]
+position = Vector2(100, 45)
+collision_layer = 2
+collision_mask = 1
+script = ExtResource("3_merchant")
+station_key = "apothecary"
+theme = "ALCHEMY"
+npc_role = "apprentice"
+room_name = "Basement"
+greeting_lines = Array[String](["Careful where you step. The extracts are sensitive.", "He didn't say we'd have visitors today.", "You smell of... the outside. And sage."])
+sensory_lines = Array[String](["The air is thick with the smell of boiling roots.", "A low bubbling sound comes from the jars.", "Shadows dance oddly on the stone walls."])
+affirmation_lines = Array[String](["Memory extraction is a messy business.", "We're almost done with the latest batch of Clarity.", "You looks like someone who's lost a lot. Of memories, I mean."])
+service_lines = Array[String](["I'm just the apprentice. Talk to the Master for the heavy stuff.", "I can show you the extraction vats, if you have the stomach.", "Don't touch anything. Especially the glowing ones."])
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Apprentice"]
+shape = SubResource("RectangleShape2D_apprentice")
+
+[node name="Sprite" type="ColorRect" parent="Apprentice"]
+offset_left = -12.0
+offset_top = -20.0
+offset_right = 12.0
+offset_bottom = 20.0
+color = Color(0.4, 0.35, 0.5, 1)
+
+[node name="Head" type="ColorRect" parent="Apprentice"]
+offset_left = -8.0
+offset_top = -30.0
+offset_right = 8.0
+offset_bottom = -20.0
+color = Color(0.8, 0.75, 0.7, 1)
+
+[node name="PromptLabel" type="Label" parent="Apprentice"]
+offset_left = -40.0
+offset_top = 30.0
+offset_right = 40.0
+offset_bottom = 50.0
+theme_override_font_sizes/font_size = 10
+text = "[E] Speak"
+horizontal_alignment = 1
+
+[node name="StairsUp" type="Area2D" parent="."]
+position = Vector2(250, 200)
+collision_layer = 2
+collision_mask = 1
+script = ExtResource("4_transition")
+target_scene = "res://scenes/interiors/ApothecaryInterior.tscn"
+target_room = "Main Shop"
+spawn_position = Vector2(40, 220)
+floor_num = 1
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StairsUp"]
+shape = SubResource("RectangleShape2D_apprentice")
+
+[node name="Visual" type="ColorRect" parent="StairsUp"]
+offset_left = -20.0
+offset_top = -15.0
+offset_right = 20.0
+offset_bottom = 15.0
+color = Color(0.25, 0.2, 0.15, 1)
+
+[node name="Label" type="Label" parent="StairsUp/Visual"]
+layout_mode = 0
+offset_top = -20.0
+offset_right = 40.0
+theme_override_font_sizes/font_size = 10
+text = "UP"
+horizontal_alignment = 1
+
+[node name="PromptLabel" type="Label" parent="StairsUp"]
+offset_left = -40.0
+offset_top = 20.0
+offset_right = 40.0
+offset_bottom = 40.0
+theme_override_font_sizes/font_size = 10
+text = "[E] Go Up"
+horizontal_alignment = 1
+
+[node name="SpawnPoint" type="Marker2D" parent="."]
+position = Vector2(240, 180)
+
+[node name="Player" parent="." instance=ExtResource("2_player")]
+position = Vector2(240, 180)
+
+[node name="UI" type="CanvasLayer" parent="."]
+
+[node name="MerchantPanel" type="PanelContainer" parent="UI"]
+offset_left = 10.0
+offset_top = 10.0
+offset_right = 180.0
+offset_bottom = 70.0
+
+[node name="VBox" type="VBoxContainer" parent="UI/MerchantPanel"]
+layout_mode = 2
+
+[node name="MerchantNameLabel" type="Label" parent="UI/MerchantPanel/VBox"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 16
+text = "The Apothecary - Lab"
+
+[node name="ThemeLabel" type="Label" parent="UI/MerchantPanel/VBox"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 12
+theme_override_colors/font_color = Color(0.4, 0.7, 0.5, 1)
+text = "ALCHEMY"
+
+[node name="DialoguePanel" type="PanelContainer" parent="UI"]
+visible = false
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -140.0
+offset_top = -80.0
+offset_right = 140.0
+offset_bottom = -10.0
+grow_horizontal = 2
+grow_vertical = 0
+
+[node name="VBox" type="VBoxContainer" parent="UI/DialoguePanel"]
+layout_mode = 2
+
+[node name="DialogueLabel" type="Label" parent="UI/DialoguePanel/VBox"]
+layout_mode = 2
+text = "..."
+autowrap_mode = 2
+
+[node name="ControlsHint" type="Label" parent="UI"]
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -150.0
+offset_top = -20.0
+offset_right = -10.0
+grow_horizontal = 0
+grow_vertical = 0
+theme_override_font_sizes/font_size = 10
+text = "WASD: Move | E: Interact"
+horizontal_alignment = 2
+
+[node name="HerbMixingUI" parent="UI" instance=ExtResource("5_minigame")]
+visible = false
+
