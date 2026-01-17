@@ -81,79 +81,97 @@ func interact() -> void:
 	dialogue_in_progress = true
 	var trust_level = GameState.get_trust_level(station_key)
 	
+	# Try to get high-quality narrative from DialogueManager first
+	var category = ""
+	match current_dialogue_stage:
+		DialogueStage.GREETING: category = "greeting"
+		DialogueStage.SENSORY: category = "subtext"
+		DialogueStage.AFFIRMATION, DialogueStage.SERVICE, DialogueStage.REVELATION: category = "breach"
+		DialogueStage.COMPLETE: category = "breach"
+	
+	var external_text = DialogueManager.get_line(station_key, trust_level, category)
+	
 	# Build dialogue based on stage and trust
 	var text: String = ""
 	var dialogue_node: String = ""
 	
-	match current_dialogue_stage:
-		DialogueStage.GREETING:
-			if greeting_lines.size() > 0:
-				text = greeting_lines[randi() % greeting_lines.size()]
-			dialogue_node = "greeting"
-			current_dialogue_stage = DialogueStage.SENSORY
-			
-		DialogueStage.SENSORY:
-			if sensory_lines.size() > 0:
-				text = sensory_lines[randi() % sensory_lines.size()]
-			dialogue_node = "sensory"
-			current_dialogue_stage = DialogueStage.AFFIRMATION
-			
-		DialogueStage.AFFIRMATION:
-			if affirmation_lines.size() > 0:
-				text = affirmation_lines[randi() % affirmation_lines.size()]
-			dialogue_node = "memory_revealed"  # This is a meaningful endpoint
-			current_dialogue_stage = DialogueStage.SERVICE
-			# Trigger world log update after affirmation
-			GameState.store_dialogue_pending(station_key, theme, text)
-			GameState.log_visit_only_after_dialogue_complete(station_key, dialogue_node)
-			show_dialogue_text(text)
-			return
-			
-		DialogueStage.SERVICE:
-			if service_lines.size() > 0:
-				text = service_lines[randi() % service_lines.size()]
-			dialogue_node = "service_provided"  # Meaningful endpoint
-			current_dialogue_stage = DialogueStage.REVELATION
-			# Trigger world log update after service
-			GameState.store_dialogue_pending(station_key, theme, text)
-			GameState.log_visit_only_after_dialogue_complete(station_key, dialogue_node)
-			show_dialogue_text(text)
-			return
-			
-		DialogueStage.REVELATION:
-			# Only show revelations at higher trust levels
-			if trust_level >= 3 and revelation_lines.size() > 0:
-				text = revelation_lines[randi() % revelation_lines.size()]
-				dialogue_node = "trust_earned"  # Meaningful endpoint
-				GameState.store_dialogue_pending(station_key, theme, text)
-				GameState.log_visit_only_after_dialogue_complete(station_key, dialogue_node)
-			else:
-				# Cycle back to affirmations if trust not high enough
-				var all_lines: Array[String] = []
-				all_lines.append_array(affirmation_lines)
-				all_lines.append_array(service_lines)
-				if all_lines.size() > 0:
-					text = all_lines[randi() % all_lines.size()]
-				dialogue_node = "reflection"
-			current_dialogue_stage = DialogueStage.COMPLETE
-			show_dialogue_text(text)
-			return
-			
-		DialogueStage.COMPLETE:
-			# Cycle through random deeper content
-			var all_deep_lines: Array[String] = []
-			all_deep_lines.append_array(affirmation_lines)
-			all_deep_lines.append_array(service_lines)
-			if trust_level >= 3:
-				all_deep_lines.append_array(revelation_lines)
-			if all_deep_lines.size() > 0:
-				text = all_deep_lines[randi() % all_deep_lines.size()]
-			dialogue_node = "continued"
-	
-	# Store dialogue text (but don't log yet for early stages)
-	GameState.store_dialogue_pending(station_key, theme, text)
-	
-	# Display dialogue in the interior scene
+	# Use external text if it's not a generic fallback
+	if external_text != "...":
+		text = external_text
+		# Advance stages logic
+		match current_dialogue_stage:
+			DialogueStage.GREETING: 
+				current_dialogue_stage = DialogueStage.SENSORY
+				dialogue_node = "greeting"
+			DialogueStage.SENSORY: 
+				current_dialogue_stage = DialogueStage.AFFIRMATION
+				dialogue_node = "sensory"
+			DialogueStage.AFFIRMATION: 
+				current_dialogue_stage = DialogueStage.SERVICE
+				dialogue_node = "memory_revealed"
+			DialogueStage.SERVICE: 
+				current_dialogue_stage = DialogueStage.REVELATION
+				dialogue_node = "service_provided"
+			DialogueStage.REVELATION, DialogueStage.COMPLETE:
+				current_dialogue_stage = DialogueStage.COMPLETE
+				dialogue_node = "ritual_complete"
+	else:
+		# Fallback to hardcoded lines in scene
+		match current_dialogue_stage:
+			DialogueStage.GREETING:
+				if greeting_lines.size() > 0:
+					text = greeting_lines[randi() % greeting_lines.size()]
+				dialogue_node = "greeting"
+				current_dialogue_stage = DialogueStage.SENSORY
+				
+			DialogueStage.SENSORY:
+				if sensory_lines.size() > 0:
+					text = sensory_lines[randi() % sensory_lines.size()]
+				dialogue_node = "sensory"
+				current_dialogue_stage = DialogueStage.AFFIRMATION
+				
+			DialogueStage.AFFIRMATION:
+				if affirmation_lines.size() > 0:
+					text = affirmation_lines[randi() % affirmation_lines.size()]
+				dialogue_node = "memory_revealed"
+				current_dialogue_stage = DialogueStage.SERVICE
+				
+			DialogueStage.SERVICE:
+				if service_lines.size() > 0:
+					text = service_lines[randi() % service_lines.size()]
+				dialogue_node = "service_provided"
+				current_dialogue_stage = DialogueStage.REVELATION
+				
+			DialogueStage.REVELATION:
+				if trust_level >= 3 and revelation_lines.size() > 0:
+					text = revelation_lines[randi() % revelation_lines.size()]
+					dialogue_node = "trust_earned"
+				else:
+					var all_lines: Array[String] = []
+					all_lines.append_array(affirmation_lines)
+					all_lines.append_array(service_lines)
+					if all_lines.size() > 0:
+						text = all_lines[randi() % all_lines.size()]
+					dialogue_node = "reflection"
+				current_dialogue_stage = DialogueStage.COMPLETE
+				
+			DialogueStage.COMPLETE:
+				var all_deep_lines: Array[String] = []
+				all_deep_lines.append_array(affirmation_lines)
+				all_deep_lines.append_array(service_lines)
+				if trust_level >= 3:
+					all_deep_lines.append_array(revelation_lines)
+				if all_deep_lines.size() > 0:
+					text = all_deep_lines[randi() % all_deep_lines.size()]
+				dialogue_node = "continued"
+
+	# Final logging and display
+	if dialogue_node in ["memory_revealed", "service_provided", "trust_earned", "ritual_complete"]:
+		GameState.store_dialogue_pending(station_key, theme, text)
+		GameState.log_visit_only_after_dialogue_complete(station_key, dialogue_node)
+	else:
+		GameState.store_dialogue_pending(station_key, theme, text)
+		
 	show_dialogue_text(text)
 
 

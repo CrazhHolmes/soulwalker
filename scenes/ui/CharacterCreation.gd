@@ -50,6 +50,14 @@ func _ready() -> void:
 	# Initialize displays
 	_update_archetype_display()
 	_update_vow_display()
+	
+	# Initial focus for controller support
+	name_input.grab_focus()
+	
+	# Subtle fade-in
+	modulate.a = 0
+	var tween = create_tween()
+	tween.tween_property(self, "modulate:a", 1.0, 0.5)
 
 # Navigate to previous archetype
 func _on_prev_pressed() -> void:
@@ -100,4 +108,4 @@ func _on_confirm_pressed() -> void:
 	GameState.set_vow(VOWS[current_vow_index])
 
 	# Transition to 2D world scene
-	SceneLoader.goto("res://scenes/world/WorldScene2D.tscn")
+	SceneTransition.transition_to("res://scenes/world/WorldScene2D.tscn")

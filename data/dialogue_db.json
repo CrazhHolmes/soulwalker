@@ -1,0 +1,21 @@
+{
+	"apothecary": {
+		"tier_0": {
+			"greeting": "Welcome to the dispensary. How may we assist your wellness today?",
+			"subtext": "You feel an urge to breathe in the sage... it feels right to trust the scent.",
+			"breach": "The herbs don't heal you. They just edit the response to the wound."
+		},
+		"tier_2": {
+			"greeting": "Ah, returning for more clarity? Most residents find the third dose is when they finally... stop asking questions.",
+			"subtext": "He isn't looking at you. He is looking at the space where your shadow should be.",
+			"breach": "The Archivist is counting your blinks. Try to stay consistent."
+		}
+	},
+	"archivist": {
+		"tier_0": {
+			"greeting": "Please present your permit. All history must be verified before viewing.",
+			"subtext": "The weight of the paper in your hand feels like a heavy anchor in a storm.",
+			"breach": "There is no 'past'. There is only the current revision of the logs."
+		}
+	}
+}
