@@ -1,0 +1,323 @@
+[gd_scene load_steps=7 format=3]
+
+[ext_resource type="Script" path="res://scenes/interiors/InteriorBase.gd" id="1_interior"]
+[ext_resource type="PackedScene" path="res://actors/player/Player.tscn" id="2_player"]
+[ext_resource type="Script" path="res://scenes/interiors/InteriorMerchant.gd" id="3_merchant"]
+[ext_resource type="Script" path="res://systems/interact/ExitDoor.gd" id="4_exit"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_merchant"]
+size = Vector2(40, 20)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_door"]
+size = Vector2(50, 20)
+
+[node name="ApothecaryInterior" type="Node2D"]
+script = ExtResource("1_interior")
+merchant_name = "The Apothecary"
+merchant_theme = "FOLK MAGIC"
+
+[node name="Background" type="ColorRect" parent="."]
+offset_left = 0.0
+offset_top = 0.0
+offset_right = 400.0
+offset_bottom = 300.0
+color = Color(0.08, 0.06, 0.1, 1)
+
+[node name="Floor" type="ColorRect" parent="."]
+offset_left = 20.0
+offset_top = 200.0
+offset_right = 380.0
+offset_bottom = 280.0
+color = Color(0.15, 0.1, 0.08, 1)
+
+[node name="WallDecor" type="Node2D" parent="."]
+
+[node name="Shelf1" type="ColorRect" parent="WallDecor"]
+offset_left = 30.0
+offset_top = 40.0
+offset_right = 100.0
+offset_bottom = 60.0
+color = Color(0.3, 0.2, 0.15, 1)
+
+[node name="Shelf2" type="ColorRect" parent="WallDecor"]
+offset_left = 30.0
+offset_top = 80.0
+offset_right = 100.0
+offset_bottom = 100.0
+color = Color(0.3, 0.2, 0.15, 1)
+
+[node name="Shelf3" type="ColorRect" parent="WallDecor"]
+offset_left = 300.0
+offset_top = 40.0
+offset_right = 370.0
+offset_bottom = 60.0
+color = Color(0.3, 0.2, 0.15, 1)
+
+[node name="Shelf4" type="ColorRect" parent="WallDecor"]
+offset_left = 300.0
+offset_top = 80.0
+offset_right = 370.0
+offset_bottom = 100.0
+color = Color(0.3, 0.2, 0.15, 1)
+
+[node name="HerbJar1" type="ColorRect" parent="WallDecor"]
+offset_left = 40.0
+offset_top = 25.0
+offset_right = 52.0
+offset_bottom = 40.0
+color = Color(0.2, 0.5, 0.3, 0.8)
+
+[node name="HerbJar2" type="ColorRect" parent="WallDecor"]
+offset_left = 58.0
+offset_top = 25.0
+offset_right = 70.0
+offset_bottom = 40.0
+color = Color(0.6, 0.4, 0.2, 0.8)
+
+[node name="HerbJar3" type="ColorRect" parent="WallDecor"]
+offset_left = 76.0
+offset_top = 25.0
+offset_right = 88.0
+offset_bottom = 40.0
+color = Color(0.4, 0.3, 0.5, 0.8)
+
+[node name="HerbJar4" type="ColorRect" parent="WallDecor"]
+offset_left = 40.0
+offset_top = 65.0
+offset_right = 52.0
+offset_bottom = 80.0
+color = Color(0.7, 0.5, 0.3, 0.8)
+
+[node name="HerbJar5" type="ColorRect" parent="WallDecor"]
+offset_left = 58.0
+offset_top = 65.0
+offset_right = 70.0
+offset_bottom = 80.0
+color = Color(0.3, 0.6, 0.4, 0.8)
+
+[node name="BoneJar1" type="ColorRect" parent="WallDecor"]
+offset_left = 310.0
+offset_top = 25.0
+offset_right = 325.0
+offset_bottom = 40.0
+color = Color(0.9, 0.85, 0.75, 0.9)
+
+[node name="BoneJar2" type="ColorRect" parent="WallDecor"]
+offset_left = 335.0
+offset_top = 25.0
+offset_right = 350.0
+offset_bottom = 40.0
+color = Color(0.85, 0.8, 0.7, 0.9)
+
+[node name="BoneJar3" type="ColorRect" parent="WallDecor"]
+offset_left = 310.0
+offset_top = 65.0
+offset_right = 325.0
+offset_bottom = 80.0
+color = Color(0.88, 0.82, 0.72, 0.9)
+
+[node name="HangingHerbs" type="Node2D" parent="WallDecor"]
+
+[node name="Herb1" type="ColorRect" parent="WallDecor/HangingHerbs"]
+offset_left = 140.0
+offset_top = 10.0
+offset_right = 148.0
+offset_bottom = 35.0
+color = Color(0.25, 0.45, 0.2, 1)
+
+[node name="Herb2" type="ColorRect" parent="WallDecor/HangingHerbs"]
+offset_left = 155.0
+offset_top = 10.0
+offset_right = 163.0
+offset_bottom = 40.0
+color = Color(0.35, 0.5, 0.25, 1)
+
+[node name="Herb3" type="ColorRect" parent="WallDecor/HangingHerbs"]
+offset_left = 170.0
+offset_top = 10.0
+offset_right = 178.0
+offset_bottom = 32.0
+color = Color(0.45, 0.55, 0.3, 1)
+
+[node name="Herb4" type="ColorRect" parent="WallDecor/HangingHerbs"]
+offset_left = 220.0
+offset_top = 10.0
+offset_right = 228.0
+offset_bottom = 38.0
+color = Color(0.3, 0.48, 0.22, 1)
+
+[node name="Herb5" type="ColorRect" parent="WallDecor/HangingHerbs"]
+offset_left = 235.0
+offset_top = 10.0
+offset_right = 243.0
+offset_bottom = 30.0
+color = Color(0.4, 0.52, 0.28, 1)
+
+[node name="Herb6" type="ColorRect" parent="WallDecor/HangingHerbs"]
+offset_left = 250.0
+offset_top = 10.0
+offset_right = 258.0
+offset_bottom = 42.0
+color = Color(0.28, 0.42, 0.18, 1)
+
+[node name="Counter" type="ColorRect" parent="."]
+offset_left = 130.0
+offset_top = 120.0
+offset_right = 270.0
+offset_bottom = 145.0
+color = Color(0.35, 0.22, 0.12, 1)
+
+[node name="CounterFront" type="ColorRect" parent="."]
+offset_left = 130.0
+offset_top = 145.0
+offset_right = 270.0
+offset_bottom = 180.0
+color = Color(0.28, 0.18, 0.1, 1)
+
+[node name="Merchant" type="Area2D" parent="."]
+position = Vector2(200, 100)
+collision_layer = 2
+collision_mask = 1
+script = ExtResource("3_merchant")
+station_key = "apothecary"
+theme = "FOLK MAGIC"
+greeting_lines = Array[String](["Ah, you've found your way inside.", "Welcome, seeker. The herbs know you.", "Few find this door. Fewer still enter."])
+sensory_lines = Array[String](["Dried herbs hang from every beam.", "The smell of sage and something older.", "Bones rattle in jars behind the counter."])
+affirmation_lines = Array[String](["You don't remember me, do you?", "The herbs are working. You're starting to see.", "Some memories are buried for a reason."])
+service_lines = Array[String](["I have remedies... for those who truly seek.", "Something for clarity? Or perhaps... forgetting?", "The body remembers what the mind cannot."])
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Merchant"]
+position = Vector2(0, 25)
+shape = SubResource("RectangleShape2D_merchant")
+
+[node name="Sprite" type="ColorRect" parent="Merchant"]
+offset_left = -16.0
+offset_top = -24.0
+offset_right = 16.0
+offset_bottom = 24.0
+color = Color(0.3, 0.5, 0.35, 1)
+
+[node name="Head" type="ColorRect" parent="Merchant"]
+offset_left = -10.0
+offset_top = -36.0
+offset_right = 10.0
+offset_bottom = -24.0
+color = Color(0.8, 0.7, 0.6, 1)
+
+[node name="Hood" type="ColorRect" parent="Merchant"]
+offset_left = -14.0
+offset_top = -40.0
+offset_right = 14.0
+offset_bottom = -30.0
+color = Color(0.2, 0.35, 0.25, 1)
+
+[node name="PromptLabel" type="Label" parent="Merchant"]
+offset_left = -40.0
+offset_top = 50.0
+offset_right = 40.0
+offset_bottom = 70.0
+theme_override_font_sizes/font_size = 12
+text = "[E] Speak"
+horizontal_alignment = 1
+visible = false
+
+[node name="ExitDoor" type="Area2D" parent="."]
+position = Vector2(200, 270)
+collision_layer = 2
+collision_mask = 1
+script = ExtResource("4_exit")
+prompt_text = "[E] Exit"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ExitDoor"]
+shape = SubResource("RectangleShape2D_door")
+
+[node name="DoorVisual" type="ColorRect" parent="ExitDoor"]
+offset_left = -25.0
+offset_top = -10.0
+offset_right = 25.0
+offset_bottom = 10.0
+color = Color(0.4, 0.28, 0.15, 1)
+
+[node name="DoorFrame" type="ColorRect" parent="ExitDoor"]
+offset_left = -30.0
+offset_top = -15.0
+offset_right = 30.0
+offset_bottom = -10.0
+color = Color(0.25, 0.15, 0.08, 1)
+
+[node name="PromptLabel" type="Label" parent="ExitDoor"]
+offset_left = -40.0
+offset_top = 15.0
+offset_right = 40.0
+offset_bottom = 35.0
+theme_override_font_sizes/font_size = 12
+text = "[E] Exit"
+horizontal_alignment = 1
+visible = false
+
+[node name="SpawnPoint" type="Marker2D" parent="."]
+position = Vector2(200, 230)
+
+[node name="Player" parent="." instance=ExtResource("2_player")]
+position = Vector2(200, 230)
+
+[node name="UI" type="CanvasLayer" parent="."]
+
+[node name="MerchantPanel" type="PanelContainer" parent="UI"]
+anchors_preset = 0
+offset_left = 10.0
+offset_top = 10.0
+offset_right = 180.0
+offset_bottom = 70.0
+
+[node name="VBox" type="VBoxContainer" parent="UI/MerchantPanel"]
+layout_mode = 2
+
+[node name="MerchantNameLabel" type="Label" parent="UI/MerchantPanel/VBox"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 16
+text = "The Apothecary"
+
+[node name="ThemeLabel" type="Label" parent="UI/MerchantPanel/VBox"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 12
+theme_override_colors/font_color = Color(0.4, 0.7, 0.5, 1)
+text = "FOLK MAGIC"
+
+[node name="DialoguePanel" type="PanelContainer" parent="UI"]
+visible = false
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -180.0
+offset_top = -100.0
+offset_right = 180.0
+offset_bottom = -20.0
+grow_horizontal = 2
+grow_vertical = 0
+
+[node name="VBox" type="VBoxContainer" parent="UI/DialoguePanel"]
+layout_mode = 2
+
+[node name="DialogueLabel" type="Label" parent="UI/DialoguePanel/VBox"]
+layout_mode = 2
+text = "..."
+autowrap_mode = 2
+
+[node name="ControlsHint" type="Label" parent="UI"]
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -150.0
+offset_top = -30.0
+offset_right = -10.0
+offset_bottom = -10.0
+grow_horizontal = 0
+grow_vertical = 0
+theme_override_font_sizes/font_size = 12
+text = "WASD: Move | E: Interact"
+horizontal_alignment = 2

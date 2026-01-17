@@ -1,0 +1,27 @@
+# Godot 4
+.godot/
+
+# Export
+export_presets.cfg
+export_templates.cfg
+
+# Imported files (automatically generated)
+*.import
+
+# Build outputs
+build/
+exports/
+
+# System files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# IDE files
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Backup files
+*~

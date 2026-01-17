@@ -1,0 +1,349 @@
+[gd_scene load_steps=7 format=3]
+
+[ext_resource type="Script" path="res://scenes/interiors/InteriorBase.gd" id="1_interior"]
+[ext_resource type="PackedScene" path="res://actors/player/Player.tscn" id="2_player"]
+[ext_resource type="Script" path="res://scenes/interiors/InteriorMerchant.gd" id="3_merchant"]
+[ext_resource type="Script" path="res://systems/interact/ExitDoor.gd" id="4_exit"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_merchant"]
+size = Vector2(40, 20)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_door"]
+size = Vector2(50, 20)
+
+[node name="ArchivistInterior" type="Node2D"]
+script = ExtResource("1_interior")
+merchant_name = "The Archivist"
+merchant_theme = "SECRETS"
+
+[node name="Background" type="ColorRect" parent="."]
+offset_left = 0.0
+offset_top = 0.0
+offset_right = 400.0
+offset_bottom = 300.0
+color = Color(0.05, 0.05, 0.08, 1)
+
+[node name="Floor" type="ColorRect" parent="."]
+offset_left = 20.0
+offset_top = 200.0
+offset_right = 380.0
+offset_bottom = 280.0
+color = Color(0.12, 0.12, 0.15, 1)
+
+[node name="WallDecor" type="Node2D" parent="."]
+
+[node name="FilingCabinet1" type="ColorRect" parent="WallDecor"]
+offset_left = 20.0
+offset_top = 30.0
+offset_right = 55.0
+offset_bottom = 120.0
+color = Color(0.25, 0.25, 0.28, 1)
+
+[node name="Drawer1" type="ColorRect" parent="WallDecor/FilingCabinet1"]
+offset_left = 3.0
+offset_top = 5.0
+offset_right = 32.0
+offset_bottom = 25.0
+color = Color(0.3, 0.3, 0.33, 1)
+
+[node name="Drawer2" type="ColorRect" parent="WallDecor/FilingCabinet1"]
+offset_left = 3.0
+offset_top = 30.0
+offset_right = 32.0
+offset_bottom = 50.0
+color = Color(0.3, 0.3, 0.33, 1)
+
+[node name="Drawer3" type="ColorRect" parent="WallDecor/FilingCabinet1"]
+offset_left = 3.0
+offset_top = 55.0
+offset_right = 32.0
+offset_bottom = 75.0
+color = Color(0.3, 0.3, 0.33, 1)
+
+[node name="FilingCabinet2" type="ColorRect" parent="WallDecor"]
+offset_left = 60.0
+offset_top = 30.0
+offset_right = 95.0
+offset_bottom = 120.0
+color = Color(0.25, 0.25, 0.28, 1)
+
+[node name="Drawer1" type="ColorRect" parent="WallDecor/FilingCabinet2"]
+offset_left = 3.0
+offset_top = 5.0
+offset_right = 32.0
+offset_bottom = 25.0
+color = Color(0.3, 0.3, 0.33, 1)
+
+[node name="Drawer2" type="ColorRect" parent="WallDecor/FilingCabinet2"]
+offset_left = 3.0
+offset_top = 30.0
+offset_right = 32.0
+offset_bottom = 50.0
+color = Color(0.3, 0.3, 0.33, 1)
+
+[node name="FilingCabinet3" type="ColorRect" parent="WallDecor"]
+offset_left = 305.0
+offset_top = 30.0
+offset_right = 340.0
+offset_bottom = 120.0
+color = Color(0.25, 0.25, 0.28, 1)
+
+[node name="Drawer1" type="ColorRect" parent="WallDecor/FilingCabinet3"]
+offset_left = 3.0
+offset_top = 5.0
+offset_right = 32.0
+offset_bottom = 25.0
+color = Color(0.3, 0.3, 0.33, 1)
+
+[node name="Drawer2" type="ColorRect" parent="WallDecor/FilingCabinet3"]
+offset_left = 3.0
+offset_top = 30.0
+offset_right = 32.0
+offset_bottom = 50.0
+color = Color(0.3, 0.3, 0.33, 1)
+
+[node name="FilingCabinet4" type="ColorRect" parent="WallDecor"]
+offset_left = 345.0
+offset_top = 30.0
+offset_right = 380.0
+offset_bottom = 120.0
+color = Color(0.25, 0.25, 0.28, 1)
+
+[node name="Drawer1" type="ColorRect" parent="WallDecor/FilingCabinet4"]
+offset_left = 3.0
+offset_top = 5.0
+offset_right = 32.0
+offset_bottom = 25.0
+color = Color(0.3, 0.3, 0.33, 1)
+
+[node name="Drawer2" type="ColorRect" parent="WallDecor/FilingCabinet4"]
+offset_left = 3.0
+offset_top = 30.0
+offset_right = 32.0
+offset_bottom = 50.0
+color = Color(0.3, 0.3, 0.33, 1)
+
+[node name="ReelToReel" type="ColorRect" parent="WallDecor"]
+offset_left = 170.0
+offset_top = 20.0
+offset_right = 230.0
+offset_bottom = 60.0
+color = Color(0.2, 0.2, 0.22, 1)
+
+[node name="Reel1" type="ColorRect" parent="WallDecor/ReelToReel"]
+offset_left = 5.0
+offset_top = 8.0
+offset_right = 25.0
+offset_bottom = 28.0
+color = Color(0.15, 0.15, 0.17, 1)
+
+[node name="Reel2" type="ColorRect" parent="WallDecor/ReelToReel"]
+offset_left = 35.0
+offset_top = 8.0
+offset_right = 55.0
+offset_bottom = 28.0
+color = Color(0.15, 0.15, 0.17, 1)
+
+[node name="RedactedDoc1" type="ColorRect" parent="WallDecor"]
+offset_left = 120.0
+offset_top = 70.0
+offset_right = 150.0
+offset_bottom = 95.0
+color = Color(0.85, 0.82, 0.75, 1)
+
+[node name="Redaction1" type="ColorRect" parent="WallDecor/RedactedDoc1"]
+offset_left = 3.0
+offset_top = 5.0
+offset_right = 27.0
+offset_bottom = 10.0
+color = Color(0.1, 0.1, 0.1, 1)
+
+[node name="Redaction2" type="ColorRect" parent="WallDecor/RedactedDoc1"]
+offset_left = 3.0
+offset_top = 13.0
+offset_right = 20.0
+offset_bottom = 18.0
+color = Color(0.1, 0.1, 0.1, 1)
+
+[node name="RedactedDoc2" type="ColorRect" parent="WallDecor"]
+offset_left = 250.0
+offset_top = 70.0
+offset_right = 280.0
+offset_bottom = 95.0
+color = Color(0.85, 0.82, 0.75, 1)
+
+[node name="Redaction1" type="ColorRect" parent="WallDecor/RedactedDoc2"]
+offset_left = 3.0
+offset_top = 5.0
+offset_right = 27.0
+offset_bottom = 10.0
+color = Color(0.1, 0.1, 0.1, 1)
+
+[node name="Redaction2" type="ColorRect" parent="WallDecor/RedactedDoc2"]
+offset_left = 3.0
+offset_top = 13.0
+offset_right = 15.0
+offset_bottom = 18.0
+color = Color(0.1, 0.1, 0.1, 1)
+
+[node name="Desk" type="ColorRect" parent="."]
+offset_left = 130.0
+offset_top = 120.0
+offset_right = 270.0
+offset_bottom = 145.0
+color = Color(0.22, 0.2, 0.25, 1)
+
+[node name="DeskFront" type="ColorRect" parent="."]
+offset_left = 130.0
+offset_top = 145.0
+offset_right = 270.0
+offset_bottom = 180.0
+color = Color(0.18, 0.16, 0.2, 1)
+
+[node name="Merchant" type="Area2D" parent="."]
+position = Vector2(200, 100)
+collision_layer = 2
+collision_mask = 1
+script = ExtResource("3_merchant")
+station_key = "archivist"
+theme = "SECRETS"
+greeting_lines = Array[String](["You're in the system now.", "Everything is filed. Everything is known.", "Sit. We have matters to... review."])
+sensory_lines = Array[String](["Filing cabinets stretch into shadow.", "A reel-to-reel tape spins silently.", "Redacted documents cover every surface."])
+affirmation_lines = Array[String](["Everything you know was approved for release.", "The real files are never declassified.", "You volunteered. Or so the records say."])
+service_lines = Array[String](["I can show you your file... for a price.", "Some truths are better left redacted.", "What would you like to know? Or unknow?"])
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Merchant"]
+position = Vector2(0, 25)
+shape = SubResource("RectangleShape2D_merchant")
+
+[node name="Sprite" type="ColorRect" parent="Merchant"]
+offset_left = -16.0
+offset_top = -24.0
+offset_right = 16.0
+offset_bottom = 24.0
+color = Color(0.35, 0.35, 0.45, 1)
+
+[node name="Head" type="ColorRect" parent="Merchant"]
+offset_left = -10.0
+offset_top = -36.0
+offset_right = 10.0
+offset_bottom = -24.0
+color = Color(0.75, 0.7, 0.65, 1)
+
+[node name="Glasses" type="ColorRect" parent="Merchant"]
+offset_left = -8.0
+offset_top = -34.0
+offset_right = 8.0
+offset_bottom = -30.0
+color = Color(0.3, 0.3, 0.35, 0.8)
+
+[node name="PromptLabel" type="Label" parent="Merchant"]
+offset_left = -40.0
+offset_top = 50.0
+offset_right = 40.0
+offset_bottom = 70.0
+theme_override_font_sizes/font_size = 12
+text = "[E] Speak"
+horizontal_alignment = 1
+visible = false
+
+[node name="ExitDoor" type="Area2D" parent="."]
+position = Vector2(200, 270)
+collision_layer = 2
+collision_mask = 1
+script = ExtResource("4_exit")
+prompt_text = "[E] Exit"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ExitDoor"]
+shape = SubResource("RectangleShape2D_door")
+
+[node name="DoorVisual" type="ColorRect" parent="ExitDoor"]
+offset_left = -25.0
+offset_top = -10.0
+offset_right = 25.0
+offset_bottom = 10.0
+color = Color(0.3, 0.3, 0.35, 1)
+
+[node name="DoorFrame" type="ColorRect" parent="ExitDoor"]
+offset_left = -30.0
+offset_top = -15.0
+offset_right = 30.0
+offset_bottom = -10.0
+color = Color(0.2, 0.2, 0.22, 1)
+
+[node name="PromptLabel" type="Label" parent="ExitDoor"]
+offset_left = -40.0
+offset_top = 15.0
+offset_right = 40.0
+offset_bottom = 35.0
+theme_override_font_sizes/font_size = 12
+text = "[E] Exit"
+horizontal_alignment = 1
+visible = false
+
+[node name="SpawnPoint" type="Marker2D" parent="."]
+position = Vector2(200, 230)
+
+[node name="Player" parent="." instance=ExtResource("2_player")]
+position = Vector2(200, 230)
+
+[node name="UI" type="CanvasLayer" parent="."]
+
+[node name="MerchantPanel" type="PanelContainer" parent="UI"]
+anchors_preset = 0
+offset_left = 10.0
+offset_top = 10.0
+offset_right = 180.0
+offset_bottom = 70.0
+
+[node name="VBox" type="VBoxContainer" parent="UI/MerchantPanel"]
+layout_mode = 2
+
+[node name="MerchantNameLabel" type="Label" parent="UI/MerchantPanel/VBox"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 16
+text = "The Archivist"
+
+[node name="ThemeLabel" type="Label" parent="UI/MerchantPanel/VBox"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 12
+theme_override_colors/font_color = Color(0.5, 0.5, 0.7, 1)
+text = "SECRETS"
+
+[node name="DialoguePanel" type="PanelContainer" parent="UI"]
+visible = false
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -180.0
+offset_top = -100.0
+offset_right = 180.0
+offset_bottom = -20.0
+grow_horizontal = 2
+grow_vertical = 0
+
+[node name="VBox" type="VBoxContainer" parent="UI/DialoguePanel"]
+layout_mode = 2
+
+[node name="DialogueLabel" type="Label" parent="UI/DialoguePanel/VBox"]
+layout_mode = 2
+text = "..."
+autowrap_mode = 2
+
+[node name="ControlsHint" type="Label" parent="UI"]
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -150.0
+offset_top = -30.0
+offset_right = -10.0
+offset_bottom = -10.0
+grow_horizontal = 0
+grow_vertical = 0
+theme_override_font_sizes/font_size = 12
+text = "WASD: Move | E: Interact"
+horizontal_alignment = 2
