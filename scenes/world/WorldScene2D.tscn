@@ -1,12 +1,16 @@
-[gd_scene load_steps=11 format=3]
+[gd_scene load_steps=12 format=3]
 
 [ext_resource type="Script" path="res://scenes/world/WorldScene2D.gd" id="1_world"]
 [ext_resource type="PackedScene" path="res://actors/player/Player.tscn" id="2_player"]
 [ext_resource type="Script" path="res://systems/interact/BuildingEntrance.gd" id="3_entrance"]
-[ext_resource type="Texture2D" path="res://assets/sprites/buildings_sheet.png" id="4_buildings"]
-[ext_resource type="Texture2D" path="res://assets/sprites/props_sheet.png" id="5_props"]
-[ext_resource type="Texture2D" path="res://assets/sprites/npcs_sheet.png" id="6_npcs"]
+[ext_resource type="Texture2D" path="res://assets/sprites/buildings_brutalist.png" id="4_buildings"]
+[ext_resource type="Texture2D" path="res://assets/sprites/props_sheet.jpg" id="5_props"]
+[ext_resource type="Texture2D" path="res://assets/sprites/npcs_guards_staff.png" id="6_npcs"]
 [ext_resource type="Script" path="res://systems/interact/WorldNPC.gd" id="7_npc_script"]
+[ext_resource type="PackedScene" path="res://scenes/ui/ComplianceDisplay.tscn" id="8_compliance"]
+[ext_resource type="Shader" path="res://systems/shaders/SpriteAlpha.gdshader" id="9_alpha"]
+[ext_resource type="Script" path="res://systems/interact/LiraNPC.gd" id="10_lira_script"]
+[ext_resource type="Shader" path="res://systems/shaders/LiminalBackground.gdshader" id="11_bg_shader"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_boundary"]
 size = Vector2(800, 20)
@@ -29,17 +33,33 @@ size = Vector2(30, 40)
 [sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_window"]
 size = Vector2(20, 25)
 
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_world_sprites"]
+shader = ExtResource("9_alpha")
+shader_parameter/threshold = 0.1
+shader_parameter/target_color = Color(0.1, 0.1, 0.1, 1)
+shader_parameter/use_target_color = true
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_world_bg"]
+shader = ExtResource("11_bg_shader")
+shader_parameter/background_color = Color(0.04, 0.04, 0.08, 1)
+shader_parameter/line_color = Color(0.15, 0.15, 0.25, 0.4)
+shader_parameter/line_frequency = 3.0
+shader_parameter/scroll_speed = 0.02
+
 [node name="WorldScene2D" type="Node2D"]
+y_sort_enabled = true
 script = ExtResource("1_world")
 
 [node name="Floor" type="ColorRect" parent="."]
+material = SubResource("ShaderMaterial_world_bg")
 offset_left = 0.0
 offset_top = 0.0
 offset_right = 800.0
 offset_bottom = 500.0
-color = Color(0.102, 0.102, 0.18, 1)
 
 [node name="FloorPattern" type="Node2D" parent="."]
+visible = false
 
 [node name="Tile1" type="ColorRect" parent="FloorPattern"]
 offset_left = 0.0
@@ -168,6 +188,30 @@ theme_override_font_sizes/font_size = 12
 text = "[E] Speak"
 horizontal_alignment = 1
 
+[node name="Lira" type="Area2D" parent="NPCs" groups=["npc"]]
+position = Vector2(600, 200)
+collision_layer = 2
+collision_mask = 1
+script = ExtResource("10_lira_script")
+
+[node name="Sprite2D" type="Sprite2D" parent="NPCs/Lira"]
+material = SubResource("ShaderMaterial_world_sprites")
+texture = ExtResource("6_npcs")
+region_enabled = true
+region_rect = Rect2(512, 0, 128, 128)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="NPCs/Lira"]
+shape = SubResource("RectangleShape2D_door")
+
+[node name="PromptLabel" type="Label" parent="NPCs/Lira"]
+offset_left = -40.0
+offset_top = -60.0
+offset_right = 40.0
+offset_bottom = -40.0
+theme_override_font_sizes/font_size = 12
+text = "[E] Speak"
+horizontal_alignment = 1
+
 [node name="Player" parent="." instance=ExtResource("2_player")]
 position = Vector2(400, 380)
 
@@ -185,20 +229,21 @@ position = Vector2(0, 10)
 shape = SubResource("RectangleShape2D_building")
 
 [node name="Visual" type="Sprite2D" parent="Buildings/ApothecaryBuilding"]
+material = SubResource("ShaderMaterial_world_sprites")
 position = Vector2(0, -30)
-scale = Vector2(0.4, 0.4)
+scale = Vector2(0.6, 0.6)
 texture = ExtResource("4_buildings")
 region_enabled = true
-region_rect = Rect2(0, 0, 512, 512)
+region_rect = Rect2(0, 64, 256, 192)
 
 [node name="EnterArea" type="Area2D" parent="Buildings/ApothecaryBuilding"]
-position = Vector2(0, 55)
+position = Vector2(0, 85)
 collision_layer = 2
 collision_mask = 1
 script = ExtResource("3_entrance")
 interior_scene = "res://scenes/interiors/ApothecaryInterior.tscn"
 entrance_id = "apothecary_main"
-prompt_text = "[E] Enter Apothecary"
+prompt_text = "[E] ENTER APOTHECARY"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Buildings/ApothecaryBuilding/EnterArea"]
 shape = SubResource("RectangleShape2D_door")
@@ -225,20 +270,21 @@ position = Vector2(0, 10)
 shape = SubResource("RectangleShape2D_building")
 
 [node name="Visual" type="Sprite2D" parent="Buildings/ArchivistBuilding"]
+material = SubResource("ShaderMaterial_world_sprites")
 position = Vector2(0, -30)
-scale = Vector2(0.4, 0.4)
+scale = Vector2(0.6, 0.6)
 texture = ExtResource("4_buildings")
 region_enabled = true
-region_rect = Rect2(0, 512, 512, 512)
+region_rect = Rect2(0, 512, 256, 256)
 
 [node name="EnterArea" type="Area2D" parent="Buildings/ArchivistBuilding"]
-position = Vector2(0, 55)
+position = Vector2(0, 85)
 collision_layer = 2
 collision_mask = 1
 script = ExtResource("3_entrance")
 interior_scene = "res://scenes/interiors/ArchivistInterior.tscn"
 entrance_id = "archivist_main"
-prompt_text = "[E] Enter Archives"
+prompt_text = "[E] ENTER ARCHIVES"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Buildings/ArchivistBuilding/EnterArea"]
 shape = SubResource("RectangleShape2D_door")
@@ -265,20 +311,21 @@ position = Vector2(0, 10)
 shape = SubResource("RectangleShape2D_building")
 
 [node name="Visual" type="Sprite2D" parent="Buildings/GatekeeperBuilding"]
+material = SubResource("ShaderMaterial_world_sprites")
 position = Vector2(0, -30)
-scale = Vector2(0.4, 0.5)
+scale = Vector2(0.6, 0.6)
 texture = ExtResource("4_buildings")
 region_enabled = true
-region_rect = Rect2(512, 0, 512, 1024)
+region_rect = Rect2(512, 0, 256, 448)
 
 [node name="EnterArea" type="Area2D" parent="Buildings/GatekeeperBuilding"]
-position = Vector2(0, 55)
+position = Vector2(0, 85)
 collision_layer = 2
 collision_mask = 1
 script = ExtResource("3_entrance")
 interior_scene = "res://scenes/interiors/GatekeeperInterior.tscn"
 entrance_id = "gatekeeper_main"
-prompt_text = "[E] Enter Gateway"
+prompt_text = "[E] ENTER GATEWAY"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Buildings/GatekeeperBuilding/EnterArea"]
 shape = SubResource("RectangleShape2D_door")
@@ -379,18 +426,21 @@ layout_mode = 2
 theme_override_font_sizes/font_size = 12
 text = "\"Vow\""
 
+[node name="ComplianceDisplay" parent="UI" instance=ExtResource("8_compliance")]
+
 [node name="ControlsHint" type="Label" parent="UI"]
 anchors_preset = 3
 anchor_left = 1.0
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -180.0
+offset_left = -220.0
 offset_top = -30.0
 offset_right = -10.0
 offset_bottom = -10.0
 grow_horizontal = 0
 grow_vertical = 0
 theme_override_font_sizes/font_size = 12
-text = "WASD: Move | E/Space: Interact"
+text = "WASD: Move | E/Space/X: Interact"
 horizontal_alignment = 2
+

@@ -1,5 +1,15 @@
+[gd_scene load_steps=5 format=3]
+
 [ext_resource type="Script" path="res://actors/player/Player.gd" id="1_player"]
-[ext_resource type="Texture2D" path="res://assets/sprites/player.png" id="2_player_tex"]
+[ext_resource type="Texture2D" path="res://assets/sprites/player.jpg" id="2_player_tex"]
+[ext_resource type="Texture2D" path="res://assets/sprites/soulwalker_sheet.png" id="6_soulwalker"]
+[ext_resource type="Shader" path="res://systems/shaders/SpriteAlpha.gdshader" id="7_alpha_shader"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_player"]
+shader = ExtResource("7_alpha_shader")
+shader_parameter/threshold = 0.1
+shader_parameter/target_color = Color(0.1, 0.1, 0.1, 1)
+shader_parameter/use_target_color = true
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_attack"]
 radius = 40.0
@@ -8,6 +18,7 @@ radius = 40.0
 radius = 8.0
 
 [node name="Player" type="CharacterBody2D"]
+y_sort_enabled = true
 collision_layer = 1
 collision_mask = 1
 script = ExtResource("1_player")
@@ -24,26 +35,30 @@ shape = SubResource("CircleShape2D_attack")
 shape = SubResource("CircleShape2D_collision")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-texture = ExtResource("2_player_tex")
+material = SubResource("ShaderMaterial_player")
+scale = Vector2(0.3, 0.3)
+texture = ExtResource("6_soulwalker")
+region_enabled = true
+region_rect = Rect2(65, 145, 185, 230)
 
 [node name="AttackVisual" type="ColorRect" parent="."]
 visible = false
-offset_left = -40.0
-offset_top = -40.0
-offset_right = 40.0
-offset_bottom = 40.0
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
 color = Color(0.4, 0.6, 1, 0.3)
 
 [node name="Glow" type="ColorRect" parent="."]
 z_index = -1
-offset_left = -15.0
-offset_top = -15.0
-offset_right = 15.0
-offset_bottom = 15.0
+offset_left = -10.0
+offset_top = -10.0
+offset_right = 10.0
+offset_bottom = 10.0
 color = Color(0.3, 0.5, 0.8, 0.15)
 
 [node name="Camera2D" type="Camera2D" parent="."]
-zoom = Vector2(2, 2)
+zoom = Vector2(2.5, 2.5)
 limit_left = 0
 limit_top = 0
 limit_right = 1600
@@ -51,3 +66,4 @@ limit_bottom = 1200
 limit_smoothed = true
 position_smoothing_enabled = true
 position_smoothing_speed = 6.0
+

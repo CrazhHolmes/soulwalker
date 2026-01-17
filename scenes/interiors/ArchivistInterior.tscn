@@ -1,11 +1,13 @@
-[gd_scene load_steps=8 format=3]
+[gd_scene load_steps=9 format=3]
 
 [ext_resource type="Script" path="res://scenes/interiors/InteriorBase.gd" id="1_interior"]
 [ext_resource type="PackedScene" path="res://actors/player/Player.tscn" id="2_player"]
 [ext_resource type="Script" path="res://scenes/interiors/InteriorMerchant.gd" id="3_merchant"]
 [ext_resource type="Script" path="res://systems/interact/ExitDoor.gd" id="4_exit"]
 [ext_resource type="Script" path="res://systems/interact/RoomTransition.gd" id="4_transition"]
-[ext_resource type="Texture2D" path="res://assets/sprites/npcs_sheet.png" id="5_npcs"]
+[ext_resource type="Texture2D" path="res://assets/sprites/npcs_sheet.jpg" id="5_npcs"]
+[ext_resource type="PackedScene" path="res://scenes/ui/ComplianceDisplay.tscn" id="6_compliance"]
+[ext_resource type="Script" path="res://systems/interact/RedactionConsole.gd" id="7_redaction"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_merchant"]
 size = Vector2(40, 20)
@@ -13,19 +15,38 @@ size = Vector2(40, 20)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_door"]
 size = Vector2(50, 20)
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_console"]
+size = Vector2(30, 20)
+
+[ext_resource type="Shader" path="res://systems/shaders/LiminalBackground.gdshader" id="8_alpha"]
+[ext_resource type="Shader" path="res://systems/shaders/LiminalBackground.gdshader" id="9_bg_shader"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_merchant"]
+shader = ExtResource("8_alpha")
+shader_parameter/threshold = 0.3
+shader_parameter/kill_checkerboard = true
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_bg"]
+shader = ExtResource("9_bg_shader")
+shader_parameter/background_color = Color(0.04, 0.04, 0.06, 1)
+shader_parameter/line_color = Color(0.1, 0.1, 0.2, 0.4)
+shader_parameter/line_frequency = 5.0
+shader_parameter/scroll_speed = 0.01
+
 [node name="ArchivistInterior" type="Node2D"]
 script = ExtResource("1_interior")
 merchant_name = "Caden Whorle"
 merchant_theme = "KEEPER OF RECORDS"
 
 [node name="Background" type="ColorRect" parent="."]
+material = SubResource("ShaderMaterial_bg")
 offset_left = 0.0
 offset_top = 0.0
 offset_right = 400.0
 offset_bottom = 300.0
-color = Color(0.05, 0.05, 0.08, 1)
 
 [node name="Floor" type="ColorRect" parent="."]
+visible = false
 offset_left = 20.0
 offset_top = 200.0
 offset_right = 380.0
@@ -202,6 +223,56 @@ offset_right = 270.0
 offset_bottom = 180.0
 color = Color(0.18, 0.16, 0.2, 1)
 
+[node name="RedactionConsole" type="Area2D" parent="."]
+position = Vector2(50, 160)
+collision_layer = 2
+collision_mask = 1
+script = ExtResource("7_redaction")
+terminal_type = "MK-IV"
+prompt_text = "[E] Access Terminal"
+requires_clearance = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="RedactionConsole"]
+shape = SubResource("RectangleShape2D_console")
+
+[node name="TerminalVisual" type="ColorRect" parent="RedactionConsole"]
+offset_left = -20.0
+offset_top = -35.0
+offset_right = 20.0
+offset_bottom = 0.0
+color = Color(0.12, 0.12, 0.15, 1)
+
+[node name="Screen" type="ColorRect" parent="RedactionConsole/TerminalVisual"]
+offset_left = 3.0
+offset_top = 3.0
+offset_right = 37.0
+offset_bottom = 28.0
+color = Color(0.02, 0.05, 0.02, 1)
+
+[node name="ScreenGlow" type="ColorRect" parent="RedactionConsole/TerminalVisual"]
+offset_left = 5.0
+offset_top = 5.0
+offset_right = 35.0
+offset_bottom = 26.0
+color = Color(0.1, 0.6, 0.1, 0.5)
+
+[node name="Keyboard" type="ColorRect" parent="RedactionConsole/TerminalVisual"]
+offset_left = 2.0
+offset_top = 30.0
+offset_right = 38.0
+offset_bottom = 35.0
+color = Color(0.15, 0.15, 0.18, 1)
+
+[node name="PromptLabel" type="Label" parent="RedactionConsole"]
+offset_left = -50.0
+offset_top = 5.0
+offset_right = 50.0
+offset_bottom = 25.0
+theme_override_font_sizes/font_size = 10
+text = "[E] Access Terminal"
+horizontal_alignment = 1
+visible = false
+
 [node name="Walls" type="StaticBody2D" parent="."]
 collision_layer = 1
 collision_mask = 0
@@ -236,6 +307,7 @@ position = Vector2(0, 25)
 shape = SubResource("RectangleShape2D_merchant")
 
 [node name="Sprite2D" type="Sprite2D" parent="Merchant"]
+material = SubResource("ShaderMaterial_merchant")
 texture = ExtResource("5_npcs")
 region_enabled = true
 region_rect = Rect2(128, 128, 128, 128)
@@ -338,6 +410,8 @@ position = Vector2(200, 230)
 
 [node name="UI" type="CanvasLayer" parent="."]
 
+[node name="ComplianceDisplay" parent="UI" instance=ExtResource("6_compliance")]
+
 [node name="MerchantPanel" type="PanelContainer" parent="UI"]
 anchors_preset = 0
 offset_left = 10.0
@@ -396,3 +470,4 @@ grow_vertical = 0
 theme_override_font_sizes/font_size = 12
 text = "WASD: Move | E: Interact"
 horizontal_alignment = 2
+

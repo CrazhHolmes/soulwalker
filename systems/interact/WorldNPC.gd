@@ -14,15 +14,27 @@ extends Area2D
 
 var player_nearby: bool = false
 var dialogue_count: int = 0
+var time_passed: float = 0.0
 
 func _ready():
 	body_entered.connect(_on_body_entered)
 	body_exited.connect(_on_body_exited)
 	prompt_label.visible = false
 	
-func _process(_delta):
+	# Randomized start time for offset breathing
+	time_passed = randf() * 10.0
+	
+func _process(delta):
+	time_passed += delta
+	_update_idle_animation()
+	
 	if player_nearby and Input.is_action_just_pressed("interact"):
 		speak()
+
+func _update_idle_animation():
+	var breath = sin(time_passed * 2.0) * 0.02
+	sprite.scale.y = 1.0 + breath
+	sprite.scale.x = 1.0 - breath * 0.5
 
 func _on_body_entered(body):
 	if body.is_in_group("player"):

@@ -3,13 +3,15 @@
 [ext_resource type="Script" path="res://scenes/world/WorldScene2D.gd" id="1_forest"]
 [ext_resource type="PackedScene" path="res://actors/player/Player.tscn" id="2_player"]
 [ext_resource type="Script" path="res://systems/interact/BuildingEntrance.gd" id="3_entrance"]
-[ext_resource type="Texture2D" path="res://assets/sprites/props_sheet.png" id="4_props"]
+[ext_resource type="Texture2D" path="res://assets/sprites/props_sheet.jpg" id="4_props"]
 [ext_resource type="PackedScene" path="res://actors/enemies/ContinuityEnforcer.tscn" id="5_enforcer"]
+[ext_resource type="PackedScene" path="res://scenes/ui/ComplianceDisplay.tscn" id="6_compliance"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_boundary"]
 size = Vector2(1600, 20)
 
 [node name="WhisperingForest" type="Node2D"]
+y_sort_enabled = true
 script = ExtResource("1_forest")
 
 [node name="Background" type="ColorRect" parent="."]
@@ -39,6 +41,7 @@ offset_bottom = 20.0
 color = Color(0.1, 0.3, 0.1, 0.6)
 
 [node name="Decor" type="Node2D" parent="."]
+y_sort_enabled = true
 
 [node name="SignalRelay" type="Sprite2D" parent="Decor"]
 position = Vector2(800, 400)
@@ -110,6 +113,8 @@ position = Vector2(100, 600)
 
 [node name="UI" type="CanvasLayer" parent="."]
 
+[node name="ComplianceDisplay" parent="UI" instance=ExtResource("6_compliance")]
+
 [node name="LogPanel" type="PanelContainer" parent="UI"]
 anchors_preset = 2
 anchor_top = 1.0
@@ -158,3 +163,4 @@ text = "Archetype"
 [node name="VowLabel" type="Label" parent="UI/PlayerInfoPanel/InfoVBox"]
 layout_mode = 2
 text = "Vow"
+

@@ -1,0 +1,26 @@
+[gd_resource type="Resource" script_class="BiographyEntry" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://systems/resources/biography_entry.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+entry_id = "memory_of_home"
+display_name = "THE MEMORY OF HOME"
+category = "FOUNDATIONAL_IDENTITY"
+weight = "SIGNIFICANT"
+rt_cost = 25
+pre_redaction_text = "The house had blue shutters. I remember because I helped my father paint them the summer I turned nine. We got more paint on ourselves than on the wood, and my mother laughed from the doorway, holding a pitcher of cold water that caught the afternoon light.
+
+The kitchen always smelled like bread. There was a window above the basin where herbs grew in clay pots—rosemary, thyme, something purple I never learned the name of. My mother would hum while she worked. I can still hear it. The melody, if not the words.
+
+My room was in the back, small but mine. I carved my initials into the beam above the bed when I was twelve. I wonder if they're still there. I wonder if the house is still there.
+
+I haven't been back. I'm not sure I could find it if I tried."
+post_redaction_text = "The █████ had ████ ████████. I ████████ because I helped my ██████ paint them the ██████ I turned ████. We got more █████ on █████████ than on the ████, and my ██████ ███████ from the ███████, holding a ███████ of cold █████ that caught the █████████ █████.
+
+The ███████ always smelled like █████. There was a ██████ above the █████ where █████ grew in ████ ████—████████, █████, something ██████ I never ███████ the ████ of. My ██████ would ███ while ███ ██████. I can █████ ████ ██. The ██████, if not the █████.
+
+My ████ was in the ████, █████ but ████. I ██████ my ████████ into the ████ above the ███ when I was ██████. I ██████ if ██████ █████ █████. I ██████ if the █████ is █████ █████.
+
+I ██████ been ████. I'm not ████ I █████ ████ ██ if I █████."
+key_consequence_flag = "memory_redacted_home"

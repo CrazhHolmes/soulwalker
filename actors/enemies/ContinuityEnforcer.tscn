@@ -1,13 +1,20 @@
 [gd_scene load_steps=5 format=3]
 
-[ext_resource type="Script" path="res://actors/enemies/EnemyBase.gd" id="1_enemy"]
-[ext_resource type="Texture2D" path="res://assets/sprites/enemies_sheet.png" id="2_enemies"]
+[ext_resource type="Script" path="res://actors/enemies/ContinuityEnforcer.gd" id="1_enemy"]
+[ext_resource type="Texture2D" path="res://assets/sprites/enemies_sheet.jpg" id="2_enemies"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_collision"]
 radius = 12.0
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_detection"]
-radius = 150.0
+radius = 200.0
+
+[ext_resource type="Shader" path="res://systems/shaders/SpriteAlpha.gdshader" id="10_alpha"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_enemy"]
+shader = ExtResource("10_alpha")
+shader_parameter/threshold = 0.15
+shader_parameter/kill_checkerboard = true
 
 [node name="ContinuityEnforcer" type="CharacterBody2D"]
 collision_layer = 4
@@ -21,6 +28,7 @@ speed = 70.0
 shape = SubResource("CircleShape2D_collision")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
+material = SubResource("ShaderMaterial_enemy")
 texture = ExtResource("2_enemies")
 region_enabled = true
 region_rect = Rect2(0, 0, 128, 128)
@@ -32,3 +40,4 @@ collision_mask = 1
 [node name="CollisionShape2D" type="CollisionShape2D" parent="DetectionArea"]
 shape = SubResource("CircleShape2D_detection")
 debug_color = Color(0.7, 0, 0, 0.1)
+

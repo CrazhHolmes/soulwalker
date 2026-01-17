@@ -31,6 +31,15 @@ var current_vow_index: int = 0
 
 # UI node references - confirm
 @onready var confirm_btn: Button = $CenterContainer/VBoxContainer/ConfirmButton
+@onready var character_preview: Sprite2D = $CenterContainer/VBoxContainer/PreviewContainer/SpriteHolder/CharacterPreview
+
+# Sprite regions for archetypes (Index on the sheet)
+const ARCHETYPE_REGIONS = {
+	"Warrior": Rect2(0, 0, 128, 128),     # Index 0
+	"Mage": Rect2(128, 0, 128, 128),      # Index 1
+	"Rogue": Rect2(256, 0, 128, 128),     # Index 2
+	"Cleric": Rect2(384, 0, 128, 128)     # Index 3
+}
 
 func _ready() -> void:
 	# Set scene type in GameState
@@ -59,6 +68,13 @@ func _ready() -> void:
 	var tween = create_tween()
 	tween.tween_property(self, "modulate:a", 1.0, 0.5)
 
+func _input(event: InputEvent) -> void:
+	# Explicitly handle 'X' (Cross) button on controller for focused buttons
+	if event.is_action_pressed("interact"):
+		var focused = get_viewport().gui_get_focus_owner()
+		if focused is Button and focused.is_visible_in_tree():
+			focused.pressed.emit()
+
 # Navigate to previous archetype
 func _on_prev_pressed() -> void:
 	current_archetype_index -= 1
@@ -75,7 +91,10 @@ func _on_next_pressed() -> void:
 
 # Update the archetype label to show current selection
 func _update_archetype_display() -> void:
-	archetype_label.text = ARCHETYPES[current_archetype_index]
+	var archetype = ARCHETYPES[current_archetype_index]
+	archetype_label.text = archetype
+	if character_preview and ARCHETYPE_REGIONS.has(archetype):
+		character_preview.region_rect = ARCHETYPE_REGIONS[archetype]
 
 # Navigate to previous vow
 func _on_vow_prev_pressed() -> void:

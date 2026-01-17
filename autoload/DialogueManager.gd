@@ -4,6 +4,7 @@
 extends Node
 
 var dialogue_data: Dictionary = {}
+var current_npc: Node = null # Tracking for dialogue UI
 const DATA_PATH = "res://data/dialogue_db.json"
 
 func _ready():
@@ -33,8 +34,13 @@ const SUGGESTIVE_FRAMES = {
 }
 
 func get_line(npc_id: String, tier: int, category: String) -> String:
-	var tier_key = "tier_" + str(tier)
-	var final_text = "..."
+	var data = get_data(npc_id, tier, category)
+	if data is Dictionary:
+		return data.get("text", "...")
+	return str(data)
+
+func get_data(npc_id: String, tier: int, category: String) -> Dictionary:
+	var final_data = {"text": "..."}
 	
 	if dialogue_data.has(npc_id):
 		var npc_lines = dialogue_data[npc_id]
@@ -42,10 +48,14 @@ func get_line(npc_id: String, tier: int, category: String) -> String:
 		for t in range(tier, -1, -1):
 			var t_key = "tier_" + str(t)
 			if npc_lines.has(t_key) and npc_lines[t_key].has(category):
-				final_text = npc_lines[t_key][category]
+				var d = npc_lines[t_key][category]
+				if d is String:
+					final_data = {"text": d}
+				else:
+					final_data = d
 				break
 	
-	return final_text
+	return final_data
 
 # Wraps a line in NLP suggestive language
 func apply_nlp_frame(text: String, frame_type: String = "acceptance") -> String:

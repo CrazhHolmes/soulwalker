@@ -23,6 +23,8 @@ SceneTransition="*res://autoload/SceneTransition.tscn"
 MemoryReflection="*res://autoload/MemoryReflection.tscn"
 DocumentSearch="*res://systems/interact/DocumentSearch.gd"
 DialogueManager="*res://autoload/DialogueManager.gd"
+ContinuityLedger="*res://autoload/ContinuityLedger.gd"
+PerceptionManager="*res://autoload/PerceptionManager.tscn"
 
 [input]
 

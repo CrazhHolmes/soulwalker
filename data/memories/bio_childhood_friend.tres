@@ -1,0 +1,26 @@
+[gd_resource type="Resource" script_class="BiographyEntry" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://systems/resources/biography_entry.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+entry_id = "childhood_friend"
+display_name = "THE CHILDHOOD FRIEND"
+category = "PERSONAL_ATTACHMENT"
+weight = "MODERATE"
+rt_cost = 15
+pre_redaction_text = "Her name was Lira. We met by the river when we were seven. She taught me to skip stones—she could make them bounce five, six, seven times while mine always sank after two. I taught her the words to the song my mother sang at bedtime, the one about the stars that fell asleep.
+
+We promised we would always find each other, no matter what. I gave her half of my lucky coin—the one my father said would keep me safe. She gave me a ribbon from her hair, pale blue like the morning sky.
+
+I still have it. I think. I can almost see her face when I close my eyes. The shape of her smile. The sound of her laugh.
+
+Almost."
+post_redaction_text = "███ name was ████. We met by the █████ when we were █████. She taught me to ████ ██████—she could make them ██████ five, ███, █████ times while mine always ████ after two. I taught her the █████ to the ████ my ██████ sang at ███████, the one about the █████ that ████ ██████.
+
+We ████████ we would always ████ ████ █████, no matter what. I gave ███ half of my █████ ████—the one my ██████ said would ████ me ████. ███ gave me a ██████ from ███ ████, ████ ████ like the ███████ ███.
+
+I █████ have it. I █████. I can ██████ ███ ███ ████ when I █████ my ████. The █████ of ███ █████. The █████ of ███ █████.
+
+██████."
+key_consequence_flag = "memory_redacted_childhood_friend"

@@ -1,0 +1,154 @@
+[gd_scene load_steps=5 format=3]
+
+[ext_resource type="Script" path="res://scenes/ui/RedactionTerminal.gd" id="1_script"]
+[ext_resource type="Shader" path="res://systems/shaders/CRTTerminal.gdshader" id="2_shader"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_crt"]
+shader = ExtResource("2_shader")
+shader_parameter/barrel_distortion = 0.1
+shader_parameter/scanline_intensity = 0.15
+shader_parameter/phosphor_glow = 0.3
+shader_parameter/phosphor_color = Color(0.1, 1, 0.1, 1)
+shader_parameter/flicker_speed = 1.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_terminal"]
+bg_color = Color(0, 0, 0, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.1, 0.5, 0.1, 1)
+
+[node name="RedactionTerminal" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_script")
+
+[node name="Background" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.011, 0.015, 0.011, 1)
+
+[node name="DisplayArea" type="PanelContainer" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -320.0
+offset_top = -240.0
+offset_right = 320.0
+offset_bottom = 240.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_terminal")
+
+[node name="Content" type="Control" parent="DisplayArea"]
+layout_mode = 2
+
+[node name="Header" type="HBoxContainer" parent="DisplayArea/Content"]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_left = 10.0
+offset_top = 10.0
+offset_right = -10.0
+offset_bottom = 40.0
+grow_horizontal = 2
+
+[node name="TerminalID" type="Label" parent="DisplayArea/Content/Header"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.2, 0.8, 0.2, 1)
+theme_override_font_sizes/font_size = 14
+text = "TERMINAL: MK-IV-47"
+
+[node name="RecallTokens" type="Label" parent="DisplayArea/Content/Header"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.2, 0.8, 0.2, 1)
+theme_override_font_sizes/font_size = 14
+text = "RT: 0"
+
+[node name="MainDisplay" type="VBoxContainer" parent="DisplayArea/Content"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 20.0
+offset_top = 50.0
+offset_right = -20.0
+offset_bottom = -20.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 10
+
+[node name="Title" type="Label" parent="DisplayArea/Content/MainDisplay"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.2, 0.8, 0.2, 1)
+theme_override_font_sizes/font_size = 18
+text = "SYSTEM INITIALIZING..."
+horizontal_alignment = 1
+
+[node name="LogText" type="RichTextLabel" parent="DisplayArea/Content/MainDisplay"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_colors/default_color = Color(0.1, 0.7, 0.1, 1)
+theme_override_font_sizes/normal_font_size = 12
+bbcode_enabled = true
+text = "> INITIALIZING MEMORY INTERFACE... 
+> SCANNING BIOGRAPHICAL INDEX..."
+scroll_following = true
+
+[node name="Footer" type="HBoxContainer" parent="DisplayArea/Content"]
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 10.0
+offset_top = -30.0
+offset_right = -10.0
+offset_bottom = -10.0
+grow_horizontal = 2
+grow_vertical = 0
+
+[node name="Status" type="Label" parent="DisplayArea/Content/Footer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.2, 0.5, 0.2, 1)
+theme_override_font_sizes/font_size = 12
+text = "STATUS: READY"
+
+[node name="InputPrompt" type="Label" parent="DisplayArea/Content/Footer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.2, 0.8, 0.2, 1)
+theme_override_font_sizes/font_size = 12
+text = "[PRESS ANY KEY]"
+
+[node name="CRT_Overlay" type="ColorRect" parent="."]
+material = SubResource("ShaderMaterial_crt")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="TerminalHum" type="AudioStreamPlayer" parent="."]
+volume_db = -10.0
+autoplay = true
+
+[node name="KeyPress" type="AudioStreamPlayer" parent="."]
+volume_db = -5.0
+
+[node name="RedactionStatic" type="AudioStreamPlayer" parent="."]
+volume_db = -8.0

@@ -74,12 +74,21 @@ var player_current_health: int = 100
 
 # Tri-Currency Framework (Economic Control)
 var notarized_merits: int = 50  # NM (Controls the Body)
-var recall_tokens: int = 0      # RT (Controls the Mind) - Rare
+var recall_tokens: int = 20      # RT (Controls the Mind) - Rare
 var witness_marks: int = 0      # WM (Controls Perception) - Social/Reputation
 var doubt_marks: int = 0        # DM (Negative Perception) - Risky
 
 # Narrative & Access State
 var discovered_memories: Array[String] = []
+
+# Memory Redaction Flags - tracks which biographical entries have been archived
+var memory_flags: Dictionary = {
+	# Format: "flag_name": bool
+	# Example: "memory_redacted_childhood_friend": false
+}
+
+# Redacted biography entries (tracks which memories player has sacrificed)
+var redacted_entries: Array[String] = []
 
 # Last logged interaction text for display in World Log
 var last_log_text: String = ""
@@ -97,7 +106,7 @@ func new_game() -> void:
 	player_max_health = 100
 	player_current_health = 100
 	notarized_merits = 50
-	recall_tokens = 0
+	recall_tokens = 20
 	witness_marks = 0
 	doubt_marks = 0
 	discovered_memories = []
@@ -115,6 +124,8 @@ func new_game() -> void:
 	last_log_text = ""
 	last_theme = ""
 	current_scene_type = SceneType.MENU
+	memory_flags = {}
+	redacted_entries = []
 
 func set_player(player_name: String, archetype: String) -> void:
 	current_player_data["name"] = player_name
@@ -182,4 +193,43 @@ func DEBUG_boost_all_trust() -> void:
 	for vendor in vendor_trust.keys():
 		increase_trust(vendor, 10)
 	print("DEBUG: All trust boosted by 10. Floor 2 should be unlocked.")
+
+
+# ═══════════════════════════════════════════════════════════════════════════
+# MEMORY FLAG SYSTEM - For tracking redacted biographical entries
+# ═══════════════════════════════════════════════════════════════════════════
+
+# Sets a memory/story flag (typically when a biography entry is redacted)
+func set_flag(flag_name: String, value: bool = true) -> void:
+	memory_flags[flag_name] = value
+	if value and flag_name.begins_with("memory_redacted_"):
+		var entry_id = flag_name.replace("memory_redacted_", "")
+		if not entry_id in redacted_entries:
+			redacted_entries.append(entry_id)
+	print("GameState: Flag set - ", flag_name, " = ", value)
+
+
+# Gets the current value of a memory flag (false if not set)
+func get_flag(flag_name: String) -> bool:
+	return memory_flags.get(flag_name, false)
+
+
+# Checks if a specific biographical entry has been redacted
+func is_memory_redacted(entry_id: String) -> bool:
+	return get_flag("memory_redacted_" + entry_id)
+
+
+# Returns count of total memories redacted (for progression tracking)
+func get_redaction_count() -> int:
+	return redacted_entries.size()
+
+
+# Clears a specific flag (for memory restoration mechanics)
+func clear_flag(flag_name: String) -> void:
+	if memory_flags.has(flag_name):
+		memory_flags[flag_name] = false
+		if flag_name.begins_with("memory_redacted_"):
+			var entry_id = flag_name.replace("memory_redacted_", "")
+			redacted_entries.erase(entry_id)
+	print("GameState: Flag cleared - ", flag_name)
 
