@@ -4,7 +4,8 @@
 [ext_resource type="PackedScene" path="res://actors/player/Player.tscn" id="2_player"]
 [ext_resource type="Script" path="res://scenes/interiors/InteriorMerchant.gd" id="3_merchant"]
 [ext_resource type="Script" path="res://systems/interact/ExitDoor.gd" id="4_exit"]
-[ext_resource type="Script" path="res://systems/interact/RoomTransition.gd" id="5_transition"]
+[ext_resource type="Script" path="res://systems/interact/RoomTransition.gd" id="4_transition"]
+[ext_resource type="Texture2D" path="res://assets/sprites/npcs_sheet.png" id="5_npcs"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_merchant"]
 size = Vector2(40, 20)
@@ -14,8 +15,8 @@ size = Vector2(50, 20)
 
 [node name="ArchivistInterior" type="Node2D"]
 script = ExtResource("1_interior")
-merchant_name = "The Archivist"
-merchant_theme = "SECRETS"
+merchant_name = "Caden Whorle"
+merchant_theme = "KEEPER OF RECORDS"
 
 [node name="Background" type="ColorRect" parent="."]
 offset_left = 0.0
@@ -224,7 +225,7 @@ collision_layer = 2
 collision_mask = 1
 script = ExtResource("3_merchant")
 station_key = "archivist"
-theme = "SECRETS"
+theme = "REDACTORS"
 greeting_lines = Array[String](["You're in the system now.", "Everything is filed. Everything is known.", "Sit. We have matters to... review."])
 sensory_lines = Array[String](["Filing cabinets stretch into shadow.", "A reel-to-reel tape spins silently.", "Redacted documents cover every surface."])
 affirmation_lines = Array[String](["Everything you know was approved for release.", "The real files are never declassified.", "You volunteered. Or so the records say."])
@@ -234,26 +235,10 @@ service_lines = Array[String](["I can show you your file... for a price.", "Some
 position = Vector2(0, 25)
 shape = SubResource("RectangleShape2D_merchant")
 
-[node name="Sprite" type="ColorRect" parent="Merchant"]
-offset_left = -16.0
-offset_top = -24.0
-offset_right = 16.0
-offset_bottom = 24.0
-color = Color(0.35, 0.35, 0.45, 1)
-
-[node name="Head" type="ColorRect" parent="Merchant"]
-offset_left = -10.0
-offset_top = -36.0
-offset_right = 10.0
-offset_bottom = -24.0
-color = Color(0.75, 0.7, 0.65, 1)
-
-[node name="Glasses" type="ColorRect" parent="Merchant"]
-offset_left = -8.0
-offset_top = -34.0
-offset_right = 8.0
-offset_bottom = -30.0
-color = Color(0.3, 0.3, 0.35, 0.8)
+[node name="Sprite2D" type="Sprite2D" parent="Merchant"]
+texture = ExtResource("5_npcs")
+region_enabled = true
+region_rect = Rect2(128, 128, 128, 128)
 
 [node name="PromptLabel" type="Label" parent="Merchant"]
 offset_left = -40.0

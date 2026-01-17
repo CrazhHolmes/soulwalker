@@ -25,8 +25,16 @@ func load_dialogue():
 	else:
 		push_error("DialogueManager: JSON Parse Error: " + json.get_error_message())
 
+# NLP Suggestive Frames (Presuppositions and Implied Inevitability)
+const SUGGESTIVE_FRAMES = {
+	"acceptance": ["It is natural that you [LINE].", "As you accept the records, you [LINE]."],
+	"doubt": ["You might think you remember, but as you [LINE]...", "The document contradicts your thought that you [LINE]."],
+	"inevitability": ["The system has already prepared the way for you to [LINE].", "Calibration is complete once you [LINE]."]
+}
+
 func get_line(npc_id: String, tier: int, category: String) -> String:
 	var tier_key = "tier_" + str(tier)
+	var final_text = "..."
 	
 	if dialogue_data.has(npc_id):
 		var npc_lines = dialogue_data[npc_id]
@@ -34,6 +42,16 @@ func get_line(npc_id: String, tier: int, category: String) -> String:
 		for t in range(tier, -1, -1):
 			var t_key = "tier_" + str(t)
 			if npc_lines.has(t_key) and npc_lines[t_key].has(category):
-				return npc_lines[t_key][category]
+				final_text = npc_lines[t_key][category]
+				break
 	
-	return "..." # Default fallback
+	return final_text
+
+# Wraps a line in NLP suggestive language
+func apply_nlp_frame(text: String, frame_type: String = "acceptance") -> String:
+	if not SUGGESTIVE_FRAMES.has(frame_type):
+		return text
+		
+	var templates = SUGGESTIVE_FRAMES[frame_type]
+	var template = templates[randi() % templates.size()]
+	return template.replace("[LINE]", text.trim_suffix("."))

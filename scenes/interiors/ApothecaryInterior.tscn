@@ -5,6 +5,7 @@
 [ext_resource type="Script" path="res://scenes/interiors/InteriorMerchant.gd" id="3_merchant"]
 [ext_resource type="Script" path="res://systems/interact/ExitDoor.gd" id="4_exit"]
 [ext_resource type="Script" path="res://systems/interact/RoomTransition.gd" id="5_transition"]
+[ext_resource type="Texture2D" path="res://assets/sprites/npcs_sheet.png" id="6_npcs"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_merchant"]
 size = Vector2(40, 20)
@@ -14,8 +15,8 @@ size = Vector2(50, 20)
 
 [node name="ApothecaryInterior" type="Node2D"]
 script = ExtResource("1_interior")
-merchant_name = "The Apothecary"
-merchant_theme = "FOLK MAGIC"
+merchant_name = "Veyla Thornmend"
+merchant_theme = "REMEDY PROVIDER"
 
 [node name="Background" type="ColorRect" parent="."]
 offset_left = 0.0
@@ -198,36 +199,16 @@ collision_layer = 2
 collision_mask = 1
 script = ExtResource("3_merchant")
 station_key = "apothecary"
-theme = "FOLK MAGIC"
-greeting_lines = Array[String](["Ah, you've found your way inside.", "Welcome, seeker. The herbs know you.", "Few find this door. Fewer still enter."])
-sensory_lines = Array[String](["Dried herbs hang from every beam.", "The smell of sage and something older.", "Bones rattle in jars behind the counter."])
-affirmation_lines = Array[String](["You don't remember me, do you?", "The herbs are working. You're starting to see.", "Some memories are buried for a reason."])
-service_lines = Array[String](["I have remedies... for those who truly seek.", "Something for clarity? Or perhaps... forgetting?", "The body remembers what the mind cannot."])
+theme = "SILENT PROTOCOL"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Merchant"]
 position = Vector2(0, 25)
 shape = SubResource("RectangleShape2D_merchant")
 
-[node name="Sprite" type="ColorRect" parent="Merchant"]
-offset_left = -16.0
-offset_top = -24.0
-offset_right = 16.0
-offset_bottom = 24.0
-color = Color(0.3, 0.5, 0.35, 1)
-
-[node name="Head" type="ColorRect" parent="Merchant"]
-offset_left = -10.0
-offset_top = -36.0
-offset_right = 10.0
-offset_bottom = -24.0
-color = Color(0.8, 0.7, 0.6, 1)
-
-[node name="Hood" type="ColorRect" parent="Merchant"]
-offset_left = -14.0
-offset_top = -40.0
-offset_right = 14.0
-offset_bottom = -30.0
-color = Color(0.2, 0.35, 0.25, 1)
+[node name="Sprite2D" type="Sprite2D" parent="Merchant"]
+texture = ExtResource("6_npcs")
+region_enabled = true
+region_rect = Rect2(384, 128, 128, 128)
 
 [node name="PromptLabel" type="Label" parent="Merchant"]
 offset_left = -40.0

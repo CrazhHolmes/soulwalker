@@ -4,6 +4,9 @@
 [ext_resource type="PackedScene" path="res://actors/player/Player.tscn" id="2_player"]
 [ext_resource type="Script" path="res://systems/interact/BuildingEntrance.gd" id="3_entrance"]
 [ext_resource type="Texture2D" path="res://assets/sprites/buildings_sheet.png" id="4_buildings"]
+[ext_resource type="Texture2D" path="res://assets/sprites/props_sheet.png" id="5_props"]
+[ext_resource type="Texture2D" path="res://assets/sprites/npcs_sheet.png" id="6_npcs"]
+[ext_resource type="Script" path="res://systems/interact/WorldNPC.gd" id="7_npc_script"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_boundary"]
 size = Vector2(800, 20)
@@ -115,6 +118,55 @@ shape = SubResource("RectangleShape2D_boundary")
 position = Vector2(810, 250)
 rotation = 1.5708
 shape = SubResource("RectangleShape2D_boundary")
+
+[node name="Decor" type="Node2D" parent="."]
+
+[node name="BulletinBoard" type="Sprite2D" parent="Decor"]
+position = Vector2(300, 300)
+texture = ExtResource("5_props")
+region_enabled = true
+region_rect = Rect2(0, 0, 340, 280)
+
+[node name="Lamp1" type="Sprite2D" parent="Decor"]
+position = Vector2(500, 280)
+texture = ExtResource("5_props")
+region_enabled = true
+region_rect = Rect2(0, 512, 256, 512)
+
+[node name="Lamp2" type="Sprite2D" parent="Decor"]
+position = Vector2(100, 400)
+texture = ExtResource("5_props")
+region_enabled = true
+region_rect = Rect2(0, 512, 256, 512)
+
+[node name="NPCs" type="Node2D" parent="."]
+
+[node name="Guard" type="Area2D" parent="NPCs" groups=["npc"]]
+position = Vector2(400, 300)
+collision_layer = 2
+collision_mask = 1
+script = ExtResource("7_npc_script")
+character_id = "guard"
+npc_name = "Sergeant Bram"
+awareness_tier = 0
+character_theme = "ENFORCEMENT"
+
+[node name="Sprite2D" type="Sprite2D" parent="NPCs/Guard"]
+texture = ExtResource("6_npcs")
+region_enabled = true
+region_rect = Rect2(128, 128, 128, 128)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="NPCs/Guard"]
+shape = SubResource("RectangleShape2D_door")
+
+[node name="PromptLabel" type="Label" parent="NPCs/Guard"]
+offset_left = -40.0
+offset_top = -60.0
+offset_right = 40.0
+offset_bottom = -40.0
+theme_override_font_sizes/font_size = 12
+text = "[E] Speak"
+horizontal_alignment = 1
 
 [node name="Player" parent="." instance=ExtResource("2_player")]
 position = Vector2(400, 380)

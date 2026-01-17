@@ -1,21 +1,55 @@
 {
 	"apothecary": {
 		"tier_0": {
-			"greeting": "Welcome to the dispensary. How may we assist your wellness today?",
-			"subtext": "You feel an urge to breathe in the sage... it feels right to trust the scent.",
-			"breach": "The herbs don't heal you. They just edit the response to the wound."
+			"greeting": "Ah, a customer! What ails you today, friend?",
+			"subtext": "The body knows what it needs—let me help you listen to it. Most find the sage... settling.",
+			"breach": "The remedies work. The lie is what they work FOR. Focus, calm, clarity... these are just types of compliance."
 		},
 		"tier_2": {
-			"greeting": "Ah, returning for more clarity? Most residents find the third dose is when they finally... stop asking questions.",
-			"subtext": "He isn't looking at you. He is looking at the space where your shadow should be.",
-			"breach": "The Archivist is counting your blinks. Try to stay consistent."
+			"greeting": "Ah, a customer! What ails you today, friend?",
+			"subtext": "Many of my regular customers swear by this blend. It ensures your thoughts settle into their correct place.",
+			"breach": "Focus Blend contains compounds that make certain memories harder to access. The ones that don't fit. I'm telling you so you know what you're buying."
+		},
+		"tier_5": {
+			"greeting": "Welcome back. You look like someone in need of... alignment.",
+			"subtext": "Traditional knowledge, properly maintained. Documentation is for your safety, as you're aware.",
+			"breach": "The Scale didn't approve my remedies. Protocol WROTE them. Every formula crosses their desk. I'm just a delivery system."
 		}
 	},
 	"archivist": {
 		"tier_0": {
-			"greeting": "Please present your permit. All history must be verified before viewing.",
-			"subtext": "The weight of the paper in your hand feels like a heavy anchor in a storm.",
-			"breach": "There is no 'past'. There is only the current revision of the logs."
+			"greeting": "The Archive welcomes all seekers of knowledge. How may I assist your inquiry?",
+			"subtext": "The records are thorough—if it happened, it's here. If it's not here, it didn't happen.",
+			"breach": "Knowledge is a public good. Private claims to truth undermine the collective certainty of the citizens."
+		},
+		"tier_5": {
+			"greeting": "Ah, a curious mind. Presentation of permits first, please.",
+			"subtext": "Your family history is part of our collective heritage. Let me retrieve your optimized record.",
+			"breach": "I've seen records change. Dates, names, events. And then I've seen myself forget they were ever different. That's the hard part."
+		}
+	},
+	"gatekeeper": {
+		"tier_0": {
+			"greeting": "You stand at a threshold. All thresholds are sacred. How may I help you cross?",
+			"subtext": "The mirror reflects what you bring to it. Every arrival is also a return to your original state.",
+			"breach": "The mirrors don't show reflections. They show the original. We are the reflections. We're the projections."
+		},
+		"tier_5": {
+			"greeting": "Welcome, traveler. Alignment restores the balance between the self and the community.",
+			"subtext": "The ritual is simple. You need only be willing to receive the frame of reality we provide.",
+			"breach": "Aethel-Astral is real. It's not another place. It's THIS place, without the frame. Raw. The Scale—we're all just agreeing not to see it."
+		}
+	},
+	"guard": {
+		"tier_0": {
+			"greeting": "Citizen. State your business.",
+			"subtext": "Keep moving. This area is monitored for your safety. Unless you have something to report?",
+			"breach": "Resisting won't be noted in your favor. The Scale provides. The Scale protects. You should remember that."
+		},
+		"tier_3": {
+			"greeting": "Your papers, please. This is routine.",
+			"subtext": "Someone's been spreading rumors. Unproductive talk. Bad for community harmony.",
+			"breach": "I enforce laws I'm not allowed to read. Literally—the full legal code is Clearance 4 and up. I work from interpreted summaries."
 		}
 	}
 }
