@@ -1,6 +1,8 @@
-[gd_scene load_steps=4 format=3]
-
+[ext_resource type="Script" path="res://actors/player/Player.gd" id="1_player"]
 [ext_resource type="Texture2D" path="res://assets/sprites/player.png" id="2_player_tex"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_attack"]
+radius = 40.0
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_collision"]
 radius = 8.0
@@ -10,11 +12,27 @@ collision_layer = 1
 collision_mask = 1
 script = ExtResource("1_player")
 
+[node name="AttackArea" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 4
+monitoring = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="AttackArea"]
+shape = SubResource("CircleShape2D_attack")
+
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_collision")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 texture = ExtResource("2_player_tex")
+
+[node name="AttackVisual" type="ColorRect" parent="."]
+visible = false
+offset_left = -40.0
+offset_top = -40.0
+offset_right = 40.0
+offset_bottom = 40.0
+color = Color(0.4, 0.6, 1, 0.3)
 
 [node name="Glow" type="ColorRect" parent="."]
 z_index = -1

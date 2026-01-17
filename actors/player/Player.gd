@@ -10,23 +10,48 @@ extends CharacterBody2D
 # Reference to the nearest interactable object (set by Interactable areas)
 var nearby_interactable: Node = null
 
+@onready var attack_area = $AttackArea
+@onready var attack_visual = $AttackVisual
+
+var can_attack: bool = true
+var attack_cooldown: float = 0.5
+var attack_damage: int = 15
+
 func _ready() -> void:
-	# Add to player group for detection by building entrances
 	add_to_group("player")
+	attack_area.body_entered.connect(_on_attack_hit)
 
 func _physics_process(_delta: float) -> void:
-	# Get input direction using custom actions (WASD, Arrows, Left Stick)
-	# Input.get_vector handles normalization automatically
 	var input_dir: Vector2 = Input.get_vector("move_left", "move_right", "move_up", "move_down")
-
-	# Apply movement
 	velocity = input_dir * speed
 	move_and_slide()
 
 func _unhandled_input(event: InputEvent) -> void:
-	# Handle interaction when E/Space/A is pressed and something is nearby
 	if event.is_action_pressed("interact") and nearby_interactable:
 		nearby_interactable.interact()
+	
+	if event.is_action_pressed("attack") and can_attack:
+		perform_attack()
+
+func perform_attack():
+	can_attack = false
+	attack_area.monitoring = true
+	attack_visual.visible = true
+	attack_visual.scale = Vector2.ZERO
+	
+	var tween = create_tween()
+	tween.tween_property(attack_visual, "scale", Vector2.ONE, 0.1)
+	tween.tween_property(attack_visual, "visible", false, 0.1).set_delay(0.1)
+	
+	await get_tree().create_timer(0.2).timeout
+	attack_area.monitoring = false
+	
+	await get_tree().create_timer(attack_cooldown).timeout
+	can_attack = true
+
+func _on_attack_hit(body):
+	if body.has_method("take_damage"):
+		body.take_damage(attack_damage)
 
 # Called by Interactable areas when player enters their detection zone
 func set_nearby_interactable(node: Node) -> void:

@@ -65,6 +65,22 @@ var dialogue_progress: Dictionary = {
 	"gatekeeper": {"stage": 0, "last_node": "", "pending_log": ""}
 }
 
+# Player Narrative Stats
+var player_name: String = ""
+var player_archetype: String = ""
+var player_vow: String = ""
+var player_max_health: int = 100
+var player_current_health: int = 100
+
+# Tri-Currency Framework (Economic Control)
+var notarized_merits: int = 50  # NM (Controls the Body)
+var recall_tokens: int = 0      # RT (Controls the Mind) - Rare
+var witness_marks: int = 0      # WM (Controls Perception) - Social/Reputation
+var doubt_marks: int = 0        # DM (Negative Perception) - Risky
+
+# Narrative & Access State
+var discovered_memories: Array[String] = []
+
 # Last logged interaction text for display in World Log
 var last_log_text: String = ""
 var last_theme: String = ""
@@ -75,6 +91,16 @@ func new_game() -> void:
 		"name": "", "archetype": "", "vow": "",
 		"level": 1, "health": 100, "max_health": 100
 	}
+	player_name = ""
+	player_archetype = ""
+	player_vow = ""
+	player_max_health = 100
+	player_current_health = 100
+	notarized_merits = 50
+	recall_tokens = 0
+	witness_marks = 0
+	doubt_marks = 0
+	discovered_memories = []
 	station_visits = {"apothecary": 0, "archivist": 0, "gatekeeper": 0}
 	vendor_trust = {
 		"apothecary": {"level": 0, "floors_unlocked": 1, "memories_revealed": []},

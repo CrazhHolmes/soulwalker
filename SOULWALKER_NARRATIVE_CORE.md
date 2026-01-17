@@ -35,5 +35,26 @@ Gateways across versions of reality. Navigation is based on coherence—what you
 4. **Unlock**: Use higher clearance to enter vaults and astral floors.
 5. **Reframe**: New dialogue options unlock as you gain language for the truth.
 
-## Tone & Feel
-Paranoia + Awe. A world that looks calm but is entirely staged. Normality as horror. A fight to remain human in a programmable world.
+## The Faction System (Alignment Protocol)
+To ensure social stability, citizens are restricted to joining only **two** of the six major societies. Choosing a path is a commitment to a specific version of reality.
+
+### The Status Quo Factions
+1. **The Redactors**: Curators of the past. *Weapon: The Eraser's Blade.*
+2. **The Mirror-Walkers**: Guardians of the interface. *Weapon: Prismatic Staff.*
+3. **The Silent Protocol**: Enforcers of linguisitc compliance. *Weapon: Stave of Silence.*
+
+### The Resistance Factions
+4. **The Unredacted**: Seekers of raw, unfiltered history. *Weapon: The Rusted Record (Club/Mace).*
+5. **The Echo-Rebels**: Use hidden signal tech to broadcast 'Noise'. *Weapon: Pulse Tuner.*
+6. **The Aethel-Pact**: Those who have made deals with 'Beyond' entities for power. *Weapon: Astral Scythe.*
+
+## Combat & The Breach
+Outside the 'Safe Zones' (Sanctuary hubs), the frame of reality is thin.
+- **Combat Zones**: Areas like the *Whispering Forest* or *Shattered Shoreline* where the 'Beyond' leaks in.
+- **Antagonists**:
+    - **Continuity Enforcers**: Elite hunters who track down those with 'High Perception Drift'.
+    - **Aethel-Husks**: Humans who failed the alignment ritual and became empty vessels for other-realm entities.
+    - **Archive Guardians**: Mechanical constructs designed to redact physical threats.
+
+## Mechanics: The Soul-Weapon
+Your weapon is an extension of your clearance. As your trust/knowledge grows, your weapon 'Decodes' more damage types.

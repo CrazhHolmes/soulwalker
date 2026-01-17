@@ -3,6 +3,8 @@
 [ext_resource type="Script" path="res://scenes/world/WorldScene2D.gd" id="1_forest"]
 [ext_resource type="PackedScene" path="res://actors/player/Player.tscn" id="2_player"]
 [ext_resource type="Script" path="res://systems/interact/BuildingEntrance.gd" id="3_entrance"]
+[ext_resource type="Texture2D" path="res://assets/sprites/props_sheet.png" id="4_props"]
+[ext_resource type="PackedScene" path="res://actors/enemies/ContinuityEnforcer.tscn" id="5_enforcer"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_boundary"]
 size = Vector2(1600, 20)
@@ -35,6 +37,63 @@ offset_top = -60.0
 offset_right = 70.0
 offset_bottom = 20.0
 color = Color(0.1, 0.3, 0.1, 0.6)
+
+[node name="Decor" type="Node2D" parent="."]
+
+[node name="SignalRelay" type="Sprite2D" parent="Decor"]
+position = Vector2(800, 400)
+texture = ExtResource("4_props")
+region_enabled = true
+region_rect = Rect2(0, 0, 340, 280)
+
+[node name="RedactedPillar" type="Sprite2D" parent="Decor"]
+position = Vector2(1200, 800)
+texture = ExtResource("4_props")
+region_enabled = true
+region_rect = Rect2(512, 512, 512, 512)
+
+[node name="Mushrooms" type="Sprite2D" parent="Decor"]
+position = Vector2(400, 900)
+texture = ExtResource("4_props")
+region_enabled = true
+region_rect = Rect2(256, 512, 256, 512)
+
+[node name="Enemies" type="Node2D" parent="."]
+
+[node name="ContinuityEnforcer" parent="Enemies" instance=ExtResource("5_enforcer")]
+position = Vector2(700, 600)
+
+[node name="ContinuityEnforcer2" parent="Enemies" instance=ExtResource("5_enforcer")]
+position = Vector2(1000, 300)
+
+[node name="ExitToSanctuary" type="Area2D" parent="."]
+position = Vector2(50, 600)
+collision_layer = 2
+collision_mask = 1
+script = ExtResource("3_entrance")
+interior_scene = "res://scenes/world/WorldScene2D.tscn"
+entrance_id = "forest_west_exit"
+prompt_text = "[E] Return to Sanctuary"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ExitToSanctuary"]
+shape = SubResource("RectangleShape2D_boundary")
+rotation = 1.5708
+scale = Vector2(0.1, 0.1)
+
+[node name="Visual" type="ColorRect" parent="ExitToSanctuary"]
+offset_left = -20.0
+offset_top = -50.0
+offset_right = 0.0
+offset_bottom = 50.0
+color = Color(0.15, 0.1, 0.05, 1)
+
+[node name="Label" type="Label" parent="ExitToSanctuary"]
+offset_left = 10.0
+offset_top = -10.0
+offset_right = 130.0
+offset_bottom = 10.0
+theme_override_font_sizes/font_size = 10
+text = "[E] Sanctuary"
 
 [node name="Boundary" type="StaticBody2D" parent="."]
 
