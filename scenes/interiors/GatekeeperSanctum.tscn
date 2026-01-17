@@ -1,0 +1,331 @@
+[gd_scene load_steps=15 format=3]
+
+[ext_resource type="Script" path="res://scenes/interiors/GatekeeperSanctum.gd" id="1_sanctum"]
+[ext_resource type="PackedScene" path="res://actors/player/Player.tscn" id="2_player"]
+[ext_resource type="Script" path="res://scenes/interiors/InteriorMerchant.gd" id="3_npc"]
+[ext_resource type="Script" path="res://systems/interact/MirrorPortal.gd" id="4_mirror"]
+[ext_resource type="Shader" path="res://systems/shaders/MirrorDistortion.gdshader" id="5_shader"]
+[ext_resource type="Script" path="res://systems/interact/ExitDoor.gd" id="6_exit"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_mirror"]
+shader = ExtResource("5_shader")
+shader_parameter/distortion_strength = 0.02
+shader_parameter/frequency = 3.0
+shader_parameter/speed = 1.5
+shader_parameter/tint = Color(0.3, 0.4, 0.8, 0.4)
+
+[sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_mirror"]
+size = Vector2(60, 100)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_mirror"]
+size = Vector2(80, 120)
+
+[sub_resource type="Animation" id="Animation_focus"]
+resource_name = "focus"
+length = 0.5
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D/Glow:color:a")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [0.1, 0.4]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_mirror"]
+_data = {
+"focus": SubResource("Animation_focus")
+}
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_npc"]
+size = Vector2(40, 20)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_overlay"]
+bg_color = Color(0.02, 0.02, 0.05, 0.85)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.5, 0.3, 0.8, 0.5)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_exit"]
+size = Vector2(100, 100)
+
+[node name="GatekeeperSanctum" type="Node2D"]
+script = ExtResource("1_sanctum")
+merchant_name = "The Gatekeeper - Astral Sanctum"
+merchant_theme = "ASTRAL"
+interior_width = 800.0
+interior_height = 600.0
+
+[node name="AstralBg" type="ColorRect" parent="."]
+offset_right = 800.0
+offset_bottom = 600.0
+color = Color(0.04, 0.02, 0.06, 1)
+
+[node name="Stars" type="ColorRect" parent="AstralBg"]
+layout_mode = 0
+offset_right = 800.0
+offset_bottom = 600.0
+color = Color(0.1, 0.1, 0.2, 0.2)
+
+[node name="Mirror_Origin" type="Area2D" parent="."]
+position = Vector2(400, 150)
+collision_layer = 2
+collision_mask = 1
+script = ExtResource("4_mirror")
+mirror_id = "mirror_origin"
+target_mirror_id = "Mirror_Past"
+memory_content = "The moment you first saw the gate. It felt like coming home."
+
+[node name="Sprite2D" type="Sprite2D" parent="Mirror_Origin"]
+material = SubResource("ShaderMaterial_mirror")
+texture = SubResource("PlaceholderTexture2D_mirror")
+
+[node name="Glow" type="ColorRect" parent="Mirror_Origin/Sprite2D"]
+offset_left = -35.0
+offset_top = -55.0
+offset_right = 35.0
+offset_bottom = 55.0
+color = Color(0.4, 0.6, 1, 0.1)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Mirror_Origin"]
+shape = SubResource("RectangleShape2D_mirror")
+
+[node name="PromptLabel" type="Label" parent="Mirror_Origin"]
+offset_left = -50.0
+offset_top = 60.0
+offset_right = 50.0
+offset_bottom = 80.0
+theme_override_font_sizes/font_size = 12
+text = "[E] Look"
+horizontal_alignment = 1
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Mirror_Origin"]
+libraries = {
+"": SubResource("AnimationLibrary_mirror")
+}
+
+[node name="Mirror_Past" type="Area2D" parent="."]
+position = Vector2(150, 400)
+collision_layer = 2
+collision_mask = 1
+script = ExtResource("4_mirror")
+mirror_id = "mirror_past"
+target_mirror_id = "Mirror_Truth"
+memory_type = 2
+memory_content = "Darkness. A voice saying: 'It's for your own good. You won't remember the pain.'"
+
+[node name="Sprite2D" type="Sprite2D" parent="Mirror_Past"]
+material = SubResource("ShaderMaterial_mirror")
+texture = SubResource("PlaceholderTexture2D_mirror")
+
+[node name="Glow" type="ColorRect" parent="Mirror_Past/Sprite2D"]
+offset_left = -35.0
+offset_top = -55.0
+offset_right = 35.0
+offset_bottom = 55.0
+color = Color(0.6, 0.3, 1, 0.1)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Mirror_Past"]
+shape = SubResource("RectangleShape2D_mirror")
+
+[node name="PromptLabel" type="Label" parent="Mirror_Past"]
+offset_left = -50.0
+offset_top = 60.0
+offset_right = 50.0
+offset_bottom = 80.0
+theme_override_font_sizes/font_size = 12
+text = "[E] Look"
+horizontal_alignment = 1
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Mirror_Past"]
+libraries = {
+"": SubResource("AnimationLibrary_mirror")
+}
+
+[node name="Mirror_Truth" type="Area2D" parent="."]
+position = Vector2(650, 400)
+collision_layer = 2
+collision_mask = 1
+script = ExtResource("4_mirror")
+mirror_id = "mirror_truth"
+target_mirror_id = "ExitPortal"
+memory_content = "You are the Soulwalker. The bridge between what was and what will be."
+
+[node name="Sprite2D" type="Sprite2D" parent="Mirror_Truth"]
+material = SubResource("ShaderMaterial_mirror")
+texture = SubResource("PlaceholderTexture2D_mirror")
+
+[node name="Glow" type="ColorRect" parent="Mirror_Truth/Sprite2D"]
+offset_left = -35.0
+offset_top = -55.0
+offset_right = 35.0
+offset_bottom = 55.0
+color = Color(1, 1, 1, 0.1)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Mirror_Truth"]
+shape = SubResource("RectangleShape2D_mirror")
+
+[node name="PromptLabel" type="Label" parent="Mirror_Truth"]
+offset_left = -50.0
+offset_top = 60.0
+offset_right = 50.0
+offset_bottom = 80.0
+theme_override_font_sizes/font_size = 12
+text = "[E] Look"
+horizontal_alignment = 1
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Mirror_Truth"]
+libraries = {
+"": SubResource("AnimationLibrary_mirror")
+}
+
+[node name="ReflectionKeeper" type="Area2D" parent="."]
+position = Vector2(400, 500)
+collision_layer = 2
+collision_mask = 1
+script = ExtResource("3_npc")
+station_key = "gatekeeper"
+theme = "ASTRAL"
+npc_role = "reflection_keeper"
+greeting_lines = Array[String](["The mirrors do not lie, but they often omit.", "Welcome to the layer of shards. Which version of you is real today?", "To walk the stars, you must first navigate your own ghosts."])
+sensory_lines = Array[String](["The hum of infinite possibilities vibrates in your teeth.", "You see your own face in every floating shard.", "The air smells like stagnant space and ozone."])
+affirmation_lines = Array[String](["Most memories here are suppressed for a reason. Are you ready to face them?", "Parallel lives are just choices you didn't make. Focus on the Choice you ARE.", "The Gatekeeper watches from the center. I only watch the reflections."])
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ReflectionKeeper"]
+shape = SubResource("RectangleShape2D_npc")
+
+[node name="Sprite" type="ColorRect" parent="ReflectionKeeper"]
+offset_left = -16.0
+offset_top = -30.0
+offset_right = 16.0
+offset_bottom = 18.0
+color = Color(0.2, 0.2, 0.4, 0.6)
+
+[node name="Head" type="ColorRect" parent="ReflectionKeeper"]
+offset_left = -10.0
+offset_top = -42.0
+offset_right = 10.0
+offset_bottom = -30.0
+color = Color(0.8, 0.8, 1, 0.8)
+
+[node name="PromptLabel" type="Label" parent="ReflectionKeeper"]
+offset_left = -40.0
+offset_top = 25.0
+offset_right = 40.0
+offset_bottom = 45.0
+theme_override_font_sizes/font_size = 10
+text = "[E] Commune"
+horizontal_alignment = 1
+
+[node name="ExitPortal" type="Area2D" parent="."]
+visible = false
+position = Vector2(400, 300)
+collision_layer = 2
+collision_mask = 1
+script = ExtResource("6_exit")
+prompt_text = "[E] Return to World"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ExitPortal"]
+shape = SubResource("RectangleShape2D_exit")
+
+[node name="Visual" type="ColorRect" parent="ExitPortal"]
+offset_left = -50.0
+offset_top = -50.0
+offset_right = 50.0
+offset_bottom = 50.0
+color = Color(1, 1, 1, 0.3)
+
+[node name="Inner" type="ColorRect" parent="ExitPortal/Visual"]
+offset_left = 10.0
+offset_top = 10.0
+offset_right = 90.0
+offset_bottom = 90.0
+color = Color(0.6, 0.8, 1, 0.5)
+
+[node name="SpawnPoint" type="Marker2D" parent="."]
+position = Vector2(400, 550)
+
+[node name="Player" parent="." instance=ExtResource("2_player")]
+position = Vector2(400, 550)
+
+[node name="UI" type="CanvasLayer" parent="."]
+
+[node name="MerchantPanel" type="PanelContainer" parent="UI"]
+offset_left = 10.0
+offset_top = 10.0
+offset_right = 220.0
+offset_bottom = 70.0
+
+[node name="VBox" type="VBoxContainer" parent="UI/MerchantPanel"]
+layout_mode = 2
+
+[node name="Name" type="Label" parent="UI/MerchantPanel/VBox"]
+layout_mode = 2
+text = "The Astral Sanctum"
+
+[node name="Theme" type="Label" parent="UI/MerchantPanel/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.6, 0.5, 1, 1)
+theme_override_font_sizes/font_size = 12
+text = "REFLECTION CHAIN ACTIVE"
+
+[node name="MemoryOverlay" type="PanelContainer" parent="UI"]
+visible = false
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -150.0
+offset_top = 80.0
+offset_right = 150.0
+offset_bottom = 200.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_overlay")
+
+[node name="VBox" type="VBoxContainer" parent="UI/MemoryOverlay"]
+layout_mode = 2
+theme_override_constants/separation = 10
+alignment = 1
+
+[node name="Type" type="Label" parent="UI/MemoryOverlay/VBox"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 12
+text = "TRUE MEMORY"
+horizontal_alignment = 1
+
+[node name="Text" type="Label" parent="UI/MemoryOverlay/VBox"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 14
+text = "Snippet of memory text..."
+horizontal_alignment = 1
+autowrap_mode = 3
+
+[node name="DialoguePanel" type="PanelContainer" parent="UI"]
+visible = false
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -200.0
+offset_top = -100.0
+offset_right = 200.0
+offset_bottom = -20.0
+grow_horizontal = 2
+grow_vertical = 0
+
+[node name="VBox" type="VBoxContainer" parent="UI/DialoguePanel"]
+layout_mode = 2
+
+[node name="DialogueLabel" type="Label" parent="UI/DialoguePanel/VBox"]
+layout_mode = 2
+text = "..."
+autowrap_mode = 2

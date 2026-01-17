@@ -245,8 +245,54 @@ collision_mask = 1
 script = ExtResource("4_exit")
 prompt_text = "[E] Exit"
 
+[node name="SanctumPortal" type="Area2D" parent="."]
+position = Vector2(40, 60)
+collision_layer = 2
+collision_mask = 1
+script = ExtResource("4_transition")
+target_scene = "res://scenes/interiors/GatekeeperSanctum.tscn"
+target_room = "Astral Sanctum"
+spawn_position = Vector2(400, 550)
+floor_num = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="SanctumPortal"]
+shape = SubResource("RectangleShape2D_door")
+
+[node name="Visual" type="ColorRect" parent="SanctumPortal"]
+offset_left = -25.0
+offset_top = -10.0
+offset_right = 25.0
+offset_bottom = 10.0
+color = Color(0.2, 0.1, 0.3, 0.6)
+
+[node name="PortalFrame" type="ColorRect" parent="SanctumPortal"]
+offset_left = -30.0
+offset_top = -15.0
+offset_right = 30.0
+offset_bottom = -10.0
+color = Color(0.5, 0.3, 0.8, 0.4)
+
+[node name="Label" type="Label" parent="SanctumPortal"]
+offset_left = -40.0
+offset_top = 10.0
+offset_right = 40.0
+offset_bottom = 25.0
+theme_override_font_sizes/font_size = 8
+text = "ASTRAL DEPTHS"
+horizontal_alignment = 1
+
+[node name="PromptLabel" type="Label" parent="SanctumPortal"]
+offset_left = -40.0
+offset_top = -30.0
+offset_right = 40.0
+offset_bottom = -10.0
+theme_override_font_sizes/font_size = 10
+text = "[E] Ascend"
+horizontal_alignment = 1
+
 [node name="CollisionShape2D" type="CollisionShape2D" parent="ExitDoor"]
 shape = SubResource("RectangleShape2D_door")
+
 
 [node name="DoorVisual" type="ColorRect" parent="ExitDoor"]
 offset_left = -25.0
