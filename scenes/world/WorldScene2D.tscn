@@ -3,6 +3,7 @@
 [ext_resource type="Script" path="res://scenes/world/WorldScene2D.gd" id="1_world"]
 [ext_resource type="PackedScene" path="res://actors/player/Player.tscn" id="2_player"]
 [ext_resource type="Script" path="res://systems/interact/BuildingEntrance.gd" id="3_entrance"]
+[ext_resource type="Texture2D" path="res://assets/sprites/buildings_sheet.png" id="4_buildings"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_boundary"]
 size = Vector2(800, 20)
@@ -131,78 +132,12 @@ collision_mask = 0
 position = Vector2(0, 10)
 shape = SubResource("RectangleShape2D_building")
 
-[node name="BuildingBack" type="Sprite2D" parent="Buildings/ApothecaryBuilding"]
-z_index = -2
-modulate = Color(0.12, 0.1, 0.15, 1)
-position = Vector2(0, -20)
-texture = SubResource("PlaceholderTexture2D_building")
-
-[node name="Roof" type="Sprite2D" parent="Buildings/ApothecaryBuilding"]
-z_index = -1
-modulate = Color(0.2, 0.35, 0.25, 1)
-position = Vector2(0, -75)
-texture = SubResource("PlaceholderTexture2D_roof")
-
-[node name="WallFront" type="ColorRect" parent="Buildings/ApothecaryBuilding"]
-z_index = -1
-offset_left = -50.0
-offset_top = -55.0
-offset_right = 50.0
-offset_bottom = 40.0
-color = Color(0.18, 0.14, 0.2, 1)
-
-[node name="Window1" type="Sprite2D" parent="Buildings/ApothecaryBuilding"]
-modulate = Color(0.4, 0.6, 0.4, 0.7)
-position = Vector2(-25, -25)
-texture = SubResource("PlaceholderTexture2D_window")
-
-[node name="Window2" type="Sprite2D" parent="Buildings/ApothecaryBuilding"]
-modulate = Color(0.4, 0.6, 0.4, 0.7)
-position = Vector2(25, -25)
-texture = SubResource("PlaceholderTexture2D_window")
-
-[node name="Door" type="Sprite2D" parent="Buildings/ApothecaryBuilding"]
-modulate = Color(0.35, 0.25, 0.18, 1)
-position = Vector2(0, 20)
-texture = SubResource("PlaceholderTexture2D_door")
-
-[node name="DoorFrame" type="ColorRect" parent="Buildings/ApothecaryBuilding"]
-offset_left = -18.0
-offset_top = -3.0
-offset_right = 18.0
-offset_bottom = 2.0
-color = Color(0.25, 0.18, 0.12, 1)
-
-[node name="SignBoard" type="ColorRect" parent="Buildings/ApothecaryBuilding"]
-offset_left = -35.0
-offset_top = -95.0
-offset_right = 35.0
-offset_bottom = -80.0
-color = Color(0.3, 0.2, 0.15, 1)
-
-[node name="NameLabel" type="Label" parent="Buildings/ApothecaryBuilding"]
-offset_left = -50.0
-offset_top = -98.0
-offset_right = 50.0
-offset_bottom = -78.0
-theme_override_font_sizes/font_size = 14
-theme_override_colors/font_color = Color(0.9, 0.85, 0.7, 1)
-text = "Apothecary"
-horizontal_alignment = 1
-
-[node name="HerbDecor1" type="ColorRect" parent="Buildings/ApothecaryBuilding"]
-offset_left = -55.0
-offset_top = -50.0
-offset_right = -50.0
-offset_bottom = -30.0
-color = Color(0.3, 0.5, 0.3, 0.8)
-
-[node name="HerbDecor2" type="ColorRect" parent="Buildings/ApothecaryBuilding"]
-offset_left = 50.0
-offset_top = -50.0
-offset_right = 55.0
-offset_bottom = -30.0
-color = Color(0.35, 0.55, 0.35, 0.8)
+[node name="Visual" type="Sprite2D" parent="Buildings/ApothecaryBuilding"]
+position = Vector2(0, -30)
+scale = Vector2(0.4, 0.4)
+texture = ExtResource("4_buildings")
+region_enabled = true
+region_rect = Rect2(0, 0, 512, 512)
 
 [node name="EnterArea" type="Area2D" parent="Buildings/ApothecaryBuilding"]
 position = Vector2(0, 55)
@@ -237,71 +172,12 @@ collision_mask = 0
 position = Vector2(0, 10)
 shape = SubResource("RectangleShape2D_building")
 
-[node name="BuildingBack" type="Sprite2D" parent="Buildings/ArchivistBuilding"]
-z_index = -2
-modulate = Color(0.1, 0.1, 0.14, 1)
-position = Vector2(0, -20)
-texture = SubResource("PlaceholderTexture2D_building")
-
-[node name="Roof" type="Sprite2D" parent="Buildings/ArchivistBuilding"]
-z_index = -1
-modulate = Color(0.25, 0.25, 0.35, 1)
-position = Vector2(0, -75)
-texture = SubResource("PlaceholderTexture2D_roof")
-
-[node name="WallFront" type="ColorRect" parent="Buildings/ArchivistBuilding"]
-z_index = -1
-offset_left = -50.0
-offset_top = -55.0
-offset_right = 50.0
-offset_bottom = 40.0
-color = Color(0.15, 0.15, 0.2, 1)
-
-[node name="Window1" type="Sprite2D" parent="Buildings/ArchivistBuilding"]
-modulate = Color(0.5, 0.5, 0.6, 0.6)
-position = Vector2(-25, -25)
-texture = SubResource("PlaceholderTexture2D_window")
-
-[node name="Window2" type="Sprite2D" parent="Buildings/ArchivistBuilding"]
-modulate = Color(0.5, 0.5, 0.6, 0.6)
-position = Vector2(25, -25)
-texture = SubResource("PlaceholderTexture2D_window")
-
-[node name="Door" type="Sprite2D" parent="Buildings/ArchivistBuilding"]
-modulate = Color(0.3, 0.3, 0.38, 1)
-position = Vector2(0, 20)
-texture = SubResource("PlaceholderTexture2D_door")
-
-[node name="DoorFrame" type="ColorRect" parent="Buildings/ArchivistBuilding"]
-offset_left = -18.0
-offset_top = -3.0
-offset_right = 18.0
-offset_bottom = 2.0
-color = Color(0.22, 0.22, 0.28, 1)
-
-[node name="SignBoard" type="ColorRect" parent="Buildings/ArchivistBuilding"]
-offset_left = -35.0
-offset_top = -95.0
-offset_right = 35.0
-offset_bottom = -80.0
-color = Color(0.25, 0.25, 0.32, 1)
-
-[node name="NameLabel" type="Label" parent="Buildings/ArchivistBuilding"]
-offset_left = -50.0
-offset_top = -98.0
-offset_right = 50.0
-offset_bottom = -78.0
-theme_override_font_sizes/font_size = 14
-theme_override_colors/font_color = Color(0.85, 0.85, 0.95, 1)
-text = "Archivist"
-horizontal_alignment = 1
-
-[node name="FileCabDecor" type="ColorRect" parent="Buildings/ArchivistBuilding"]
-offset_left = -55.0
-offset_top = -20.0
-offset_right = -50.0
-offset_bottom = 20.0
-color = Color(0.3, 0.3, 0.35, 0.8)
+[node name="Visual" type="Sprite2D" parent="Buildings/ArchivistBuilding"]
+position = Vector2(0, -30)
+scale = Vector2(0.4, 0.4)
+texture = ExtResource("4_buildings")
+region_enabled = true
+region_rect = Rect2(0, 512, 512, 512)
 
 [node name="EnterArea" type="Area2D" parent="Buildings/ArchivistBuilding"]
 position = Vector2(0, 55)
@@ -336,78 +212,12 @@ collision_mask = 0
 position = Vector2(0, 10)
 shape = SubResource("RectangleShape2D_building")
 
-[node name="BuildingBack" type="Sprite2D" parent="Buildings/GatekeeperBuilding"]
-z_index = -2
-modulate = Color(0.12, 0.08, 0.12, 1)
-position = Vector2(0, -20)
-texture = SubResource("PlaceholderTexture2D_building")
-
-[node name="Roof" type="Sprite2D" parent="Buildings/GatekeeperBuilding"]
-z_index = -1
-modulate = Color(0.4, 0.25, 0.3, 1)
-position = Vector2(0, -75)
-texture = SubResource("PlaceholderTexture2D_roof")
-
-[node name="WallFront" type="ColorRect" parent="Buildings/GatekeeperBuilding"]
-z_index = -1
-offset_left = -50.0
-offset_top = -55.0
-offset_right = 50.0
-offset_bottom = 40.0
-color = Color(0.18, 0.12, 0.16, 1)
-
-[node name="Window1" type="Sprite2D" parent="Buildings/GatekeeperBuilding"]
-modulate = Color(0.6, 0.4, 0.5, 0.6)
-position = Vector2(-25, -25)
-texture = SubResource("PlaceholderTexture2D_window")
-
-[node name="Window2" type="Sprite2D" parent="Buildings/GatekeeperBuilding"]
-modulate = Color(0.6, 0.4, 0.5, 0.6)
-position = Vector2(25, -25)
-texture = SubResource("PlaceholderTexture2D_window")
-
-[node name="Door" type="Sprite2D" parent="Buildings/GatekeeperBuilding"]
-modulate = Color(0.4, 0.25, 0.3, 1)
-position = Vector2(0, 20)
-texture = SubResource("PlaceholderTexture2D_door")
-
-[node name="DoorFrame" type="ColorRect" parent="Buildings/GatekeeperBuilding"]
-offset_left = -18.0
-offset_top = -3.0
-offset_right = 18.0
-offset_bottom = 2.0
-color = Color(0.3, 0.18, 0.22, 1)
-
-[node name="SignBoard" type="ColorRect" parent="Buildings/GatekeeperBuilding"]
-offset_left = -35.0
-offset_top = -95.0
-offset_right = 35.0
-offset_bottom = -80.0
-color = Color(0.35, 0.2, 0.25, 1)
-
-[node name="NameLabel" type="Label" parent="Buildings/GatekeeperBuilding"]
-offset_left = -50.0
-offset_top = -98.0
-offset_right = 50.0
-offset_bottom = -78.0
-theme_override_font_sizes/font_size = 14
-theme_override_colors/font_color = Color(0.95, 0.8, 0.85, 1)
-text = "Gatekeeper"
-horizontal_alignment = 1
-
-[node name="SigilDecor" type="ColorRect" parent="Buildings/GatekeeperBuilding"]
-offset_left = -55.0
-offset_top = -45.0
-offset_right = -45.0
-offset_bottom = -35.0
-color = Color(0.5, 0.3, 0.4, 0.6)
-
-[node name="SigilDecor2" type="ColorRect" parent="Buildings/GatekeeperBuilding"]
-offset_left = 45.0
-offset_top = -45.0
-offset_right = 55.0
-offset_bottom = -35.0
-color = Color(0.5, 0.3, 0.4, 0.6)
+[node name="Visual" type="Sprite2D" parent="Buildings/GatekeeperBuilding"]
+position = Vector2(0, -30)
+scale = Vector2(0.4, 0.5)
+texture = ExtResource("4_buildings")
+region_enabled = true
+region_rect = Rect2(512, 0, 512, 1024)
 
 [node name="EnterArea" type="Area2D" parent="Buildings/GatekeeperBuilding"]
 position = Vector2(0, 55)

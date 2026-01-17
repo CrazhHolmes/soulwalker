@@ -151,3 +151,9 @@ func is_floor_unlocked(vendor: String, floor_num: int) -> bool:
 		return vendor_trust[vendor]["floors_unlocked"] >= floor_num
 	return false
 
+# DEBUG: Instantly boost trust to unlock all areas
+func DEBUG_boost_all_trust() -> void:
+	for vendor in vendor_trust.keys():
+		increase_trust(vendor, 10)
+	print("DEBUG: All trust boosted by 10. Floor 2 should be unlocked.")
+

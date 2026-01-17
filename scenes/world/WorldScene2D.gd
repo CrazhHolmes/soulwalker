@@ -45,3 +45,9 @@ func update_log() -> void:
 	# Update visit counts
 	var v: Dictionary = GameState.station_visits
 	visit_count.text = "Apothecary: %d | Archivist: %d | Gatekeeper: %d" % [v.apothecary, v.archivist, v.gatekeeper]
+
+func _unhandled_input(event: InputEvent) -> void:
+	if event is InputEventKey and event.pressed:
+		if event.keycode == KEY_F5:
+			GameState.DEBUG_boost_all_trust()
+			update_log()
